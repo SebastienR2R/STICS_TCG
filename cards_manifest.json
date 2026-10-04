@@ -1,0 +1,161 @@
+{
+  "version": 1,
+  "seed": 1337,
+  "save_key": "tma_gacha_v2",
+  "default_emoji": "🎺",
+  "rarities": [
+    "common",
+    "rare",
+    "epic",
+    "legendary"
+  ],
+  "rarity_labels": {
+    "common": "Commune",
+    "rare": "Rare",
+    "epic": "Épique",
+    "legendary": "Légendaire"
+  },
+  "rarity_symbols": {
+    "common": "◆",
+    "rare": "◆◆",
+    "epic": "◆◆★",
+    "legendary": "◆◆★★"
+  },
+  "rarity_css": {
+    "common": "c",
+    "rare": "r",
+    "epic": "e",
+    "legendary": "l"
+  },
+  "rarity_weights": {
+    "common": 0.67,
+    "rare": 0.225,
+    "epic": 0.09,
+    "legendary": 0.015
+  },
+  "draw_table": {
+    "standard": {
+      "common": 82.0,
+      "rare": 98.9,
+      "epic": 99.9,
+      "legendary": 100.0
+    },
+    "bonus": {
+      "common": 60.0,
+      "rare": 88.0,
+      "epic": 99.0,
+      "legendary": 100.0
+    }
+  },
+  "foil_rarities": [
+    "epic",
+    "legendary"
+  ],
+  "albums": [
+    {
+      "key": "stics_a",
+      "title": "STICS",
+      "icon": "🎺",
+      "sets": [
+        {
+          "name": "STICS 1",
+          "ids": [
+            "001",
+            "002",
+            "003",
+            "004",
+            "005",
+            "006",
+            "007",
+            "008",
+            "009",
+            "010"
+          ]
+        }
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "id": "001",
+      "name": "Kraus",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/001Kraus.jpg",
+      "source": "photo_2026-10-04_23-10-04.jpg"
+    },
+    {
+      "id": "002",
+      "name": "Braus",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/002Braus.jpg",
+      "source": "photo_2026-10-04_23-10-06 (2).jpg"
+    },
+    {
+      "id": "003",
+      "name": "Naio",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/003Naio.jpg",
+      "source": "photo_2026-10-04_23-10-06.jpg"
+    },
+    {
+      "id": "004",
+      "name": "Criio",
+      "rarity": "rare",
+      "emoji": "🎺",
+      "image": "images/004Criio.jpg",
+      "source": "photo_2026-10-04_23-11-03.jpg"
+    },
+    {
+      "id": "005",
+      "name": "Wais",
+      "rarity": "epic",
+      "emoji": "🎺",
+      "image": "images/005Wais.jpg",
+      "source": "photo_2026-10-04_23-11-10.jpg"
+    },
+    {
+      "id": "006",
+      "name": "Orrarar",
+      "rarity": "legendary",
+      "emoji": "🎺",
+      "image": "images/006Orrarar.jpg",
+      "source": "photo_2026-10-04_23-11-15.jpg"
+    },
+    {
+      "id": "007",
+      "name": "Drais",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/007Drais.jpg",
+      "source": "photo_2026-10-04_23-11-20.jpg"
+    },
+    {
+      "id": "008",
+      "name": "Vararis",
+      "rarity": "rare",
+      "emoji": "🎺",
+      "image": "images/008Vararis.jpg",
+      "source": "photo_2026-10-04_23-11-25.jpg"
+    },
+    {
+      "id": "009",
+      "name": "Criix",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/009Criix.jpg",
+      "source": "photo_2026-10-04_23-11-31.jpg"
+    },
+    {
+      "id": "010",
+      "name": "Tays",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/010Tays.jpg",
+      "source": "photo_2026-10-04_23-11-37.jpg"
+    }
+  ],
+  "note": "Migration STICS depuis image-stics/ (noms et raretes generes, seed=1337)."
+}

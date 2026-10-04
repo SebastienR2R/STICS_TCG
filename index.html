@@ -787,12 +787,8 @@
 
         <!-- VUE 2 : ALBUMS THÉMATIQUES -->
         <div id="view-mode-albums-container" style="display: none;">
-            <!-- Piliers de catégories -->
-            <div class="album-categories-bar">
-                <button class="cat-pill-btn active" id="cat-btn-fanfares" onclick="selectAlbumCategory('fanfares')">🎺 Fanfares</button>
-                <button class="cat-pill-btn" id="cat-btn-promos" onclick="selectAlbumCategory('promos')">🎓 Séries</button>
-                <button class="cat-pill-btn" id="cat-btn-instruments" onclick="selectAlbumCategory('instruments')">🎷 Instruments</button>
-            </div>
+            <!-- Piliers de catégories (générés depuis cards_manifest.json) -->
+            <div class="album-categories-bar" id="album-categories-bar"></div>
 
             <!-- Chips d'albums défilables -->
             <div class="album-chips-scroll" id="album-chips-container"></div>
@@ -823,7 +819,7 @@
         <div class="stats-hero">
             <div class="stats-user-title" id="stats-user-name">Membre de la Band'à Joe</div>
             <div class="stats-pct-main" id="stats-pct-big">0 %</div>
-            <div class="stats-subtext" id="stats-count-sub">0 sur 222 cartes collectées</div>
+            <div class="stats-subtext" id="stats-count-sub">—</div>
         </div>
 
         <div class="stats-grid">
@@ -855,38 +851,9 @@
         </div>
 
         <div class="stats-section-title">Détail par rareté</div>
-        
-        <div class="rarity-stat-row c">
-            <div class="rarity-name-badge">
-                <span>Commune</span>
-                <span class="rarity-symbols">◆</span>
-            </div>
-            <div class="rarity-count-tag" id="stat-count-common">0 / 149</div>
-        </div>
 
-        <div class="rarity-stat-row r">
-            <div class="rarity-name-badge">
-                <span>Rare</span>
-                <span class="rarity-symbols">◆◆</span>
-            </div>
-            <div class="rarity-count-tag" id="stat-count-rare">0 / 50</div>
-        </div>
-
-        <div class="rarity-stat-row e">
-            <div class="rarity-name-badge">
-                <span>Épique</span>
-                <span class="rarity-symbols">◆◆★</span>
-            </div>
-            <div class="rarity-count-tag" id="stat-count-epic">0 / 20</div>
-        </div>
-
-        <div class="rarity-stat-row l">
-            <div class="rarity-name-badge">
-                <span>Légendaire</span>
-                <span class="rarity-symbols">◆◆★★</span>
-            </div>
-            <div class="rarity-count-tag" id="stat-count-legendary">0 / 3</div>
-        </div>
+        <!-- Lignes générées depuis cards_manifest.json (labels, symboles, quotas) -->
+        <div id="rarity-stats-list"></div>
     </div>
 
     <!-- NAVIGATION BAS -->
@@ -964,10 +931,38 @@
             tg.expand();
         }
 
-        // --- 2. CALCUL DYNAMIQUE VIA CARDS_DATA.JS ---
-        const TOTAL_CARDS = typeof CARDS_DB !== 'undefined' 
-            ? Object.values(CARDS_DB).reduce((sum, list) => sum + list.length, 0) 
+// --- 2. CALCUL DYNAMIQUE VIA CARDS_DATA.JS ---
+        // CARDS_DB et CARDS_META sont déclarés dans cards_data.js (généré).
+        // Tout ce qui suit a un repli : l'app fonctionne même avec un ancien
+        // cards_data.js, ou sans aucune donnée.
+        const META = (typeof CARDS_META !== 'undefined' && CARDS_META) ? CARDS_META : {};
+
+        const RARITIES = (typeof CARDS_DB !== 'undefined' && Array.isArray(META.rarities) && META.rarities.length)
+            ? META.rarities
+            : (typeof CARDS_DB !== 'undefined' ? Object.keys(CARDS_DB) : []);
+
+        const RARITY_LABELS = META.rarityLabels || {};
+        const RARITY_SYMBOLS = META.raritySymbols || {};
+        const RARITY_CSS = META.rarityCss || {};
+        const SAVE_KEY = META.saveKey || 'tma_gacha_v1';
+        const DRAW_TABLE = META.drawTable || null;
+        const FOIL_RARITIES = META.foilRarities || ['epic', 'legendary'];
+
+        const TOTAL_CARDS = typeof CARDS_DB !== 'undefined'
+            ? Object.values(CARDS_DB).reduce((sum, list) => sum + list.length, 0)
             : 0;
+
+        function rarityLabel(rarity) {
+            return RARITY_LABELS[rarity] || rarity;
+        }
+
+        function raritySymbol(rarity) {
+            return RARITY_SYMBOLS[rarity] || '';
+        }
+
+        function rarityTone(rarity) {
+            return `var(--color-${rarity}, #95a5b5)`;
+        }
 
         function getCardById(id) {
             if (typeof CARDS_DB === 'undefined') return null;
@@ -978,58 +973,56 @@
             return null;
         }
 
-        // --- 3. BASE DE DONNÉES DES ALBUMS THÉMATIQUES ---
-        const ALBUMS_DB = {
-            fanfares: {
-                title: "Fanfares Associées",
-                icon: "🎺",
-                sets: {
-                    "SZ": ["001", "002", "003", "004", "005", "006", "007", "009", "010", "011", "012", "013", "014", "015", "016", "017", "201", "222"],
-                    "TNT": ["070", "071", "072", "073", "075", "076", "077", "078", "079", "082", "083", "084", "085", "086", "087", "088", "089", "090", "091", "106", "202"],
-                    "DLK": ["038", "039", "041", "042", "045", "047", "051", "055", "057", "058", "059", "060", "063", "064", "065", "066", "067", "204"],
-                    "OBB": ["109", "110", "111", "112", "115", "117", "118", "120", "124", "126", "127", "128", "131", "132", "133", "134", "135", "200"],
-                    "VCP": ["093", "094", "096", "099", "100", "103", "104", "106", "108", "203"]
-                }
-            },
-            promos: {
-                title: "Promotions & Séries",
-                icon: "🎓",
-                sets: {
-                    "youri": ["007", "008", "009"],
-                    "P23": ["092", "093", "094", "095", "096", "097", "098", "099", "100", "101", "102", "103", "104", "105", "106", "107", "108"],
-                    "P24": ["046", "070", "071", "072", "073", "074", "075", "076", "077", "078", "079", "080", "081", "082", "083", "084", "085", "086", "087", "088", "089", "090", "091", "106"],
-                    "P25": ["025", "037", "038","039", "040", "041", "042", "043", "044", "045", "046", "047", "048", "049", "050", "051", "052", "053", "054", "055", "056", "057", "058", "059", "060", "061", "062", "063", "064", "065", "066", "067", "068", "069"],
-                    "P26": ["001", "002", "003", "004", "005", "006", "007", "008", "009", "010", "011", "012", "013", "014", "015", "016", "017", "018", "019", "020", "021", "022", "023", "024", "025", "026", "027", "028", "029", "030", "031", "032", "033", "034", "035", "036", "037", "058", "222"],
-                    "P27": ["109", "110", "111", "112", "113", "114", "115", "116", "117", "118", "119", "120", "121", "122", "123", "124", "125", "126", "127", "128", "129", "130", "131", "132", "133", "134", "135"],
-                    "P28": ["136", "137", "138", "139", "140", "141", "142", "143", "144", "145", "146", "147", "148"],
-                    "CS": ["180", "181", "182", "183", "184", "185", "186", "187", "188", "189"],
-                    "Fanf": ["193", "200", "201", "202", "203", "204", "205", "206", "207", "208", "209", "210", "221"],
-                    "Répertoire": ["149", "150", "151", "152", "153", "154", "155", "156", "157", "158", "159", "160", "161", "162", "163", "164", "165", "166", "167", "168", "169", "170", "171", "172", "173", "174", "175", "176", "177", "178", "179"],
-                    "Traditions": ["190", "191", "192", "194", "195", "196", "197", "198", "199", "211", "212", "213", "214", "215", "216", "217", "218", "219", "220"]
-                }
-            },
-            instruments: {
-                title: "Répartition par Instrument",
-                icon: "🎷",
-                sets: {
-                    "Trompette": ["006", "008", "009", "010", "011", "014", "018", "021", "026", "027", "034", "038", "039", "040", "041", "042", "043", "072", "073", "074", "075", "089", "091", "093", "094", "095", "096", "098", "099", "104", "106", "117", "118", "119", "120", "121", "122", "123", "136", "137"],
-                    "Trombone": ["001", "008", "011", "016", "017", "025", "030", "032", "035", "059", "060", "061", "062", "063", "064", "065", "076", "078", "079", "080", "092", "099", "100", "101", "102", "103", "107", "124", "125", "126", "127", "128", "129", "138"],
-                    "Sax Alto": ["007", "012", "013", "015", "022", "023", "029", "036", "037", "050", "051", "052", "053", "054", "055", "057", "058", "077", "081", "082", "083", "084", "104", "109", "112", "113", "114", "115", "116", "146", "147", "148"],
-                    "Sax Ténor": ["001", "002", "003", "019", "067", "068", "069", "085", "086", "087", "094", "110", "111", "130", "131", "132", "139", "140", "222"],
-                    "Sax Baryton": ["003", "055", "083", "108", "111"],
-                    "Percussions": ["002", "016", "018", "020", "024", "044", "045", "046", "047", "055", "088", "089", "090", "091", "097", "103", "106", "115", "134", "144", "145"],
-                    "Euphonium": ["004", "028", "031", "033", "066", "076", "077", "107", "108", "133", "141"],
-                    "Soubassophone": ["001", "005", "007", "014", "018", "048", "049", "066", "070", "071", "093", "103", "135", "142", "143", "145"],
-                    "Clarinette": ["056"]
-                }
-            }
-        };
+        function allCards() {
+            if (typeof CARDS_DB === 'undefined') return [];
+            return RARITIES.flatMap(rarity =>
+                (CARDS_DB[rarity] || []).map(card => ({ ...card, rarity }))
+            );
+        }
 
-        // État de navigation des albums
+        // --- 3. BASE DE DONNÉES DES ALBUMS THÉMATIQUES ---
+        // Généré par generate_cards.py (cards_manifest.json). Repli automatique :
+        // un album unique contenant toutes les cartes.
+        function buildFallbackAlbums() {
+            const ids = allCards().map(c => c.id);
+            return {
+                all: {
+                    title: "Toutes les cartes",
+                    icon: "🃏",
+                    sets: ids.length ? { "Collection": ids } : {}
+                }
+            };
+        }
+
+        const ALBUMS_DB = (META.albums && Object.keys(META.albums).length)
+            ? META.albums
+            : buildFallbackAlbums();
+
+        const ALBUM_CATEGORIES = Object.entries(ALBUMS_DB).map(([key, group]) => ({
+            key,
+            title: group.title || key,
+            icon: group.icon || '🃏'
+        }));
+
+        // État de navigation des albums (initialisé sur la 1re catégorie disponible)
         let currentCollectionMode = 'global'; // 'global' | 'albums'
-        let currentAlbumCat = 'fanfares';
-        let currentAlbumSet = 'SZ';
+        let currentAlbumCat = ALBUM_CATEGORIES.length ? ALBUM_CATEGORIES[0].key : null;
+        let currentAlbumSet = null;
         let isAlbumFilterMissingOnly = false;
+
+        function renderAlbumCategoryPills() {
+            const bar = document.getElementById('album-categories-bar');
+            if (!bar) return;
+            bar.innerHTML = '';
+            ALBUM_CATEGORIES.forEach(category => {
+                const btn = document.createElement('button');
+                btn.className = 'cat-pill-btn' + (category.key === currentAlbumCat ? ' active' : '');
+                btn.id = `cat-btn-${category.key}`;
+                btn.innerHTML = `${category.icon} ${category.title}`;
+                btn.onclick = () => selectAlbumCategory(category.key);
+                bar.appendChild(btn);
+            });
+        }
 
         // --- 4. SAUVEGARDE VIA CLOUDSTORAGE & STATS ---
         const PACK_REGEN_TIME = 10 * 60 * 1000;
@@ -1049,9 +1042,9 @@
         function saveState() {
             const data = JSON.stringify(state);
             if (tg?.CloudStorage) {
-                tg.CloudStorage.setItem('tma_gacha_v1', data);
+                tg.CloudStorage.setItem(SAVE_KEY, data);
             } else {
-                localStorage.setItem('tma_gacha_v1', data);
+                localStorage.setItem(SAVE_KEY, data);
             }
         }
 
@@ -1071,12 +1064,12 @@
             };
 
             if (tg?.CloudStorage) {
-                tg.CloudStorage.getItem('tma_gacha_v1', (err, value) => {
+                tg.CloudStorage.getItem(SAVE_KEY, (err, value) => {
                     if (!err && value) handleLoadedData(value);
-                    else handleLoadedData(localStorage.getItem('tma_gacha_v1'));
+                    else handleLoadedData(localStorage.getItem(SAVE_KEY));
                 });
             } else {
-                handleLoadedData(localStorage.getItem('tma_gacha_v1'));
+                handleLoadedData(localStorage.getItem(SAVE_KEY));
             }
         }
 
@@ -1203,23 +1196,35 @@
         }
 
         // --- 7. MOTEUR DE PROBABILITÉS PONDÉRÉ ---
-        function drawCardBySlot(slotIndex) {
-            const roll = Math.random() * 100;
-            let rarity = 'common';
-
-            if (slotIndex < 2) {
-                if (roll < 82.0) rarity = 'common';
-                else if (roll < 98.9) rarity = 'rare';
-                else if (roll < 99.9) rarity = 'epic';
-                else rarity = 'legendary';
-            } else {
-                if (roll < 60.0) rarity = 'common';
-                else if (roll < 88.0) rarity = 'rare';
-                else if (roll < 99.0) rarity = 'epic';
-                else rarity = 'legendary';
+        // Les seuils viennent de cards_manifest.json (draw_table) : la logique de
+        // tirage reste identique, seule la source des probabilités change.
+        function rollRarity(slotIndex) {
+            const table = slotIndex < 2 ? DRAW_TABLE?.standard : DRAW_TABLE?.bonus;
+            if (!table) {
+                // Repli : anciens seuils, alignés sur le tableau du README.
+                const legacy = slotIndex < 2
+                    ? { common: 82.0, rare: 98.9, epic: 99.9, legendary: 100.0 }
+                    : { common: 60.0, rare: 88.0, epic: 99.0, legendary: 100.0 };
+                const roll = Math.random() * 100;
+                for (const rarity of RARITIES) {
+                    if (roll < legacy[rarity]) return rarity;
+                }
+                return RARITIES[RARITIES.length - 1];
             }
 
-            const pool = CARDS_DB[rarity];
+            const roll = Math.random() * 100;
+            for (const rarity of RARITIES) {
+                if (roll < table[rarity]) return rarity;
+            }
+            return RARITIES[RARITIES.length - 1];
+        }
+
+        function drawCardBySlot(slotIndex) {
+            const rarity = rollRarity(slotIndex);
+            const pool = (typeof CARDS_DB !== 'undefined' && CARDS_DB[rarity]?.length)
+                ? CARDS_DB[rarity]
+                : allCards();
+            if (!pool.length) return null;
             const card = pool[Math.floor(Math.random() * pool.length)];
             return { ...card, rarity };
         }
@@ -1340,7 +1345,7 @@
 
         // --- 9. GÉNÉRATEURS VISUELS DE CARTES ---
         function generateCardHTML(card) {
-            const isFoil = (card.rarity === 'epic' || card.rarity === 'legendary');
+            const isFoil = FOIL_RARITIES.includes(card.rarity);
             const foilLayer = isFoil ? `<div class="foil-overlay foil-${card.rarity}"></div>` : '';
 
             if (card.image && card.image.trim() !== '') {
@@ -1404,13 +1409,12 @@
         }
 
         function selectAlbumCategory(cat) {
+            if (!ALBUMS_DB[cat]) return;
             currentAlbumCat = cat;
-            document.getElementById('cat-btn-fanfares').classList.toggle('active', cat === 'fanfares');
-            document.getElementById('cat-btn-promos').classList.toggle('active', cat === 'promos');
-            document.getElementById('cat-btn-instruments').classList.toggle('active', cat === 'instruments');
+            document.querySelectorAll('#album-categories-bar .cat-pill-btn')
+                .forEach(btn => btn.classList.toggle('active', btn.id === `cat-btn-${cat}`));
 
-            const sets = Object.keys(ALBUMS_DB[cat].sets);
-            currentAlbumSet = sets[0];
+            currentAlbumSet = Object.keys(ALBUMS_DB[cat].sets)[0] || null;
             renderAlbumsView();
             if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
         }
@@ -1433,16 +1437,18 @@
             const grid = document.getElementById('collection-grid');
             grid.innerHTML = '';
 
-            if (typeof CARDS_DB === 'undefined') return;
+            const cards = allCards();
+            if (!cards.length) {
+                grid.innerHTML = `
+                    <div class="empty-collection">
+                        <span>📦</span>
+                        Aucune carte disponible.<br>Regénère les données avec <code>python generate_cards.py</code>.
+                    </div>
+                `;
+                return;
+            }
 
-            const allCards = [
-                ...CARDS_DB.common.map(c => ({ ...c, rarity: 'common' })),
-                ...CARDS_DB.rare.map(c => ({ ...c, rarity: 'rare' })),
-                ...CARDS_DB.epic.map(c => ({ ...c, rarity: 'epic' })),
-                ...CARDS_DB.legendary.map(c => ({ ...c, rarity: 'legendary' }))
-            ];
-
-            const ownedCards = allCards.filter(card => (state.inventory[card.id] || 0) > 0);
+            const ownedCards = cards.filter(card => (state.inventory[card.id] || 0) > 0);
 
             if (ownedCards.length === 0) {
                 grid.innerHTML = `
@@ -1476,6 +1482,10 @@
             chipsBox.innerHTML = '';
 
             const currentGroup = ALBUMS_DB[currentAlbumCat];
+            if (!currentGroup) {
+                chipsBox.innerHTML = '<div class="empty-collection">Aucun album défini.</div>';
+                return;
+            }
             const sets = currentGroup.sets;
 
             if (!sets[currentAlbumSet]) {
@@ -1505,13 +1515,14 @@
             grid.innerHTML = '';
 
             const currentGroup = ALBUMS_DB[currentAlbumCat];
-            const cardIds = currentGroup.sets[currentAlbumSet] || [];
+            const cardIds = (currentGroup?.sets?.[currentAlbumSet]) || [];
 
             const totalInAlbum = cardIds.length;
             const ownedInAlbum = cardIds.filter(id => (state.inventory[id] || 0) > 0).length;
             const pct = totalInAlbum > 0 ? Math.round((ownedInAlbum / totalInAlbum) * 100) : 0;
 
-            document.getElementById('album-detail-title').innerText = `${currentGroup.icon} ${currentAlbumSet} (${pct}%)`;
+            document.getElementById('album-detail-title').innerText =
+                `${currentGroup?.icon || '🃏'} ${currentAlbumSet || 'Album'} (${pct}%)`;
             document.getElementById('album-progress-fill').style.width = `${pct}%`;
             document.getElementById('album-progress-text').innerText = `${ownedInAlbum} / ${totalInAlbum} cartes`;
 
@@ -1581,8 +1592,8 @@
             stage.innerHTML = generateCardHTML(card);
 
             const rarityEl = document.getElementById('modal-card-rarity');
-            rarityEl.innerText = card.rarity;
-            rarityEl.style.color = `var(--color-${card.rarity})`;
+            rarityEl.innerText = `${rarityLabel(card.rarity)} ${raritySymbol(card.rarity)}`.trim();
+            rarityEl.style.color = rarityTone(card.rarity);
 
             document.getElementById('modal-card-count').innerText = `x${count}`;
             document.getElementById('card-modal').classList.add('active');
@@ -1609,6 +1620,25 @@
         }
 
         // --- 12. ONGLET STATS ---
+        function renderRarityStatRows() {
+            const list = document.getElementById('rarity-stats-list');
+            if (!list) return;
+            list.innerHTML = '';
+
+            RARITIES.forEach(rarity => {
+                const row = document.createElement('div');
+                row.className = `rarity-stat-row ${RARITY_CSS[rarity] || ''}`;
+                row.innerHTML = `
+                    <div class="rarity-name-badge">
+                        <span>${rarityLabel(rarity)}</span>
+                        <span class="rarity-symbols">${raritySymbol(rarity)}</span>
+                    </div>
+                    <div class="rarity-count-tag" id="stat-count-${rarity}">—</div>
+                `;
+                list.appendChild(row);
+            });
+        }
+
         function renderStatsUI() {
             if (typeof CARDS_DB === 'undefined') return;
 
@@ -1617,21 +1647,26 @@
                 document.getElementById('stats-user-name').innerText = user.first_name + (user.last_name ? ` ${user.last_name}` : '');
             }
 
-            const cOwned = CARDS_DB.common.filter(c => (state.inventory[c.id] || 0) > 0).length;
-            const rOwned = CARDS_DB.rare.filter(c => (state.inventory[c.id] || 0) > 0).length;
-            const eOwned = CARDS_DB.epic.filter(c => (state.inventory[c.id] || 0) > 0).length;
-            const lOwned = CARDS_DB.legendary.filter(c => (state.inventory[c.id] || 0) > 0).length;
+            renderRarityStatRows();
 
-            const totalOwned = cOwned + rOwned + eOwned + lOwned;
+            const ownedPerRarity = {};
+            let totalOwned = 0;
+            RARITIES.forEach(rarity => {
+                const pool = CARDS_DB[rarity] || [];
+                const owned = pool.filter(c => (state.inventory[c.id] || 0) > 0).length;
+                ownedPerRarity[rarity] = { owned, total: pool.length };
+                totalOwned += owned;
+            });
+
             const pct = TOTAL_CARDS > 0 ? ((totalOwned / TOTAL_CARDS) * 100).toFixed(1) : 0;
 
             document.getElementById('stats-pct-big').innerText = `${pct} %`;
             document.getElementById('stats-count-sub').innerText = `${totalOwned} sur ${TOTAL_CARDS} cartes collectées`;
 
-            document.getElementById('stat-count-common').innerText = `${cOwned} / ${CARDS_DB.common.length}`;
-            document.getElementById('stat-count-rare').innerText = `${rOwned} / ${CARDS_DB.rare.length}`;
-            document.getElementById('stat-count-epic').innerText = `${eOwned} / ${CARDS_DB.epic.length}`;
-            document.getElementById('stat-count-legendary').innerText = `${lOwned} / ${CARDS_DB.legendary.length}`;
+            RARITIES.forEach(rarity => {
+                const el = document.getElementById(`stat-count-${rarity}`);
+                if (el) el.innerText = `${ownedPerRarity[rarity].owned} / ${ownedPerRarity[rarity].total}`;
+            });
 
             document.getElementById('stat-total-packs').innerText = state.stats.packsOpened || 0;
             document.getElementById('stat-total-drawn').innerText = state.stats.cardsDrawn || 0;
@@ -1680,11 +1715,20 @@
         }
 
         // --- 14. DÉMARRAGE ---
+        // Les conteneurs vides sont remplis dès le chargement : aucune liste de
+        // cartes, de raretés ou d'albums n'est écrite dans le HTML.
+        if (currentAlbumCat) {
+            currentAlbumSet = Object.keys(ALBUMS_DB[currentAlbumCat].sets)[0] || null;
+        }
+
         loadState(async () => {
             await syncServerTime();
             checkUrlCheats();
             renderEnergyUI();
+            renderAlbumCategoryPills();
+            renderRarityStatRows();
             renderCollection();
+            renderStatsUI();
             setInterval(updateEnergy, 1000);
         });
     </script>

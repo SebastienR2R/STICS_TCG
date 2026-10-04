@@ -1,0 +1,6 @@
+# Dossier de staging : images en attente de migration (supprime par migrate_stics.py)
+image-stics/
+
+# Python
+__pycache__/
+*.pyc
