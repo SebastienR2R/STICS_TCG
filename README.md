@@ -1,11 +1,11 @@
-# BAJ_TCG
+# STICS_TCG
 site de tcg pour Telegram
 Voici le fichier `README.md` complet et documenté, prêt à être placé à la racine de ton dépôt GitHub pour guider le projet et tout futur développeur.
 
 ---
 
 ```markdown
-# 🎺 TCG La Band'à Joe — Telegram Mini App (TMA)
+# 🎺 TCG STICS — Telegram Mini App (TMA)
 
 Jeu de cartes à collectionner (TCG / Gacha) 100 % Serverless conçu pour être exécuté nativement dans l'écosystème Telegram sous forme de **Telegram Mini App (TMA)** ou directement dans un navigateur moderne.
 

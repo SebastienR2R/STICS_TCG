@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TCG La Band'à joe</title>
+    <title>TCG STICS</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="cards_data.js"></script>
     <style>
@@ -752,7 +752,7 @@
     <!-- ONGLET 1 : BOOSTER -->
     <div id="tab-shop" class="tab-content active">
         <div class="shop-header">
-            <h2>TCG La Band'à joe</h2>
+            <h2>TCG STICS</h2>
             <p style="color: var(--hint-color); font-size: 14px; margin-top: 4px;">Ouvre des boosters et agrandis ta collection</p>
         </div>
 
@@ -817,7 +817,7 @@
         <h2 style="font-size: 22px; font-weight: 800; margin-bottom: 16px;">Mes Statistiques</h2>
 
         <div class="stats-hero">
-            <div class="stats-user-title" id="stats-user-name">Membre de la Band'à Joe</div>
+            <div class="stats-user-title" id="stats-user-name">STICS</div>
             <div class="stats-pct-main" id="stats-pct-big">0 %</div>
             <div class="stats-subtext" id="stats-count-sub">—</div>
         </div>
@@ -931,6 +931,21 @@
             tg.expand();
         }
 
+        // telegram-web-app.js expose CloudStorage même hors Telegram (version
+        // simulée 6.0) : chaque appel lève alors WebAppMethodUnsupported. On ne
+        // s'en sert donc que dans un vrai client, et tout appel reste protégé
+        // par un try/catch avec repli sur localStorage.
+        let cloudStorageUsable = !!tg?.initData;
+
+        function canUseCloudStorage() {
+            return cloudStorageUsable && !!tg?.CloudStorage;
+        }
+
+        function notify(msg) {
+            if (tg?.showAlert) tg.showAlert(msg);
+            else alert(msg);
+        }
+
 // --- 2. CALCUL DYNAMIQUE VIA CARDS_DATA.JS ---
         // CARDS_DB et CARDS_META sont déclarés dans cards_data.js (généré).
         // Tout ce qui suit a un repli : l'app fonctionne même avec un ancien
@@ -1039,17 +1054,36 @@
             }
         };
 
-        function saveState() {
-            const data = JSON.stringify(state);
-            if (tg?.CloudStorage) {
-                tg.CloudStorage.setItem(SAVE_KEY, data);
-            } else {
-                localStorage.setItem(SAVE_KEY, data);
+        function readLocalSave() {
+            try {
+                return localStorage.getItem(SAVE_KEY);
+            } catch (e) {
+                return null;
             }
         }
 
+        function saveState() {
+            const data = JSON.stringify(state);
+            if (canUseCloudStorage()) {
+                try {
+                    tg.CloudStorage.setItem(SAVE_KEY, data);
+                    return;
+                } catch (e) {
+                    cloudStorageUsable = false;
+                }
+            }
+            try {
+                localStorage.setItem(SAVE_KEY, data);
+            } catch (e) {}
+        }
+
         function loadState(callback) {
+            // Un seul passage, quelle que soit la source qui répond en premier.
+            let settled = false;
+
             const handleLoadedData = (value) => {
+                if (settled) return;
+                settled = true;
                 if (value) {
                     try {
                         const parsed = JSON.parse(value);
@@ -1063,23 +1097,45 @@
                 callback();
             };
 
-            if (tg?.CloudStorage) {
+            if (!canUseCloudStorage()) {
+                handleLoadedData(readLocalSave());
+                return;
+            }
+
+            try {
                 tg.CloudStorage.getItem(SAVE_KEY, (err, value) => {
                     if (!err && value) handleLoadedData(value);
-                    else handleLoadedData(localStorage.getItem(SAVE_KEY));
+                    else handleLoadedData(readLocalSave());
                 });
-            } else {
-                handleLoadedData(localStorage.getItem(SAVE_KEY));
+            } catch (e) {
+                cloudStorageUsable = false;
+                handleLoadedData(readLocalSave());
+                return;
             }
+
+            // Filet : un client qui ne répond pas ne doit pas figer l'app.
+            setTimeout(() => {
+                if (!settled) handleLoadedData(readLocalSave());
+            }, 1500);
         }
 
         // --- 5. GESTION DU TEMPS SÉCURISÉE (ANTI-TRICHE) & ÉNERGIE ---
-        let serverTimeOffset = 0;
+        // Par défaut on suppose l'heure locale correcte : si la synchronisation
+        // échoue ou n'aboutit jamais, getTrueNow() reste juste au lieu de
+        // renvoyer performance.now().
+        let serverTimeOffset = Date.now() - performance.now();
         let isTimeSynced = false;
 
         async function syncServerTime() {
+            // La réponse ne doit jamais bloquer le démarrage de l'interface.
+            const controller = new AbortController();
+            const timeout = setTimeout(() => controller.abort(), 3000);
             try {
-                const res = await fetch(window.location.href, { method: 'HEAD', cache: 'no-store' });
+                const res = await fetch(window.location.href, {
+                    method: 'HEAD',
+                    cache: 'no-store',
+                    signal: controller.signal
+                });
                 const serverHeader = res.headers.get('date');
                 if (serverHeader) {
                     const trueServerTime = new Date(serverHeader).getTime();
@@ -1089,6 +1145,8 @@
                 }
             } catch (e) {
                 if (!isTimeSynced) serverTimeOffset = Date.now() - performance.now();
+            } finally {
+                clearTimeout(timeout);
             }
         }
 
@@ -1148,11 +1206,6 @@
                 || new URLSearchParams(window.location.search).get('cheat');
 
             if (!param) return;
-
-            const notify = (msg) => {
-                if (tg?.showAlert) tg.showAlert(msg);
-                else alert(msg);
-            };
 
             if (param === 'reset') {
                 state = {
@@ -1236,7 +1289,10 @@
         let canProceed = false;
 
         function startPackOpening() {
-            if (state.packs <= 0) return;
+            if (state.packs <= 0) {
+                notify("Plus de booster pour le moment, patience !");
+                return;
+            }
 
             if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
 
@@ -1721,8 +1777,7 @@
             currentAlbumSet = Object.keys(ALBUMS_DB[currentAlbumCat].sets)[0] || null;
         }
 
-        loadState(async () => {
-            await syncServerTime();
+        function boot() {
             checkUrlCheats();
             renderEnergyUI();
             renderAlbumCategoryPills();
@@ -1730,7 +1785,11 @@
             renderCollection();
             renderStatsUI();
             setInterval(updateEnergy, 1000);
-        });
+            // Hors du chemin critique : l'interface est déjà utilisable.
+            syncServerTime();
+        }
+
+        loadState(boot);
     </script>
 </body>
 </html>
