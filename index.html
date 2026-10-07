@@ -2,20 +2,29 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TCG STICS</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>TCG STICS — Collection de cartes</title>
+    <meta name="description" content="TCG STICS : collectionne les cartes, ouvre des boosters et complète l'album. 109 cartes, 4 raretés.">
+    <meta name="theme-color" content="#111720">
+    <meta name="color-scheme" content="dark">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="favicon.svg">
+    <link rel="manifest" href="site.webmanifest">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="TCG STICS">
+    <meta property="og:description" content="Collectionne les cartes, ouvre des boosters et complète l'album.">
+    <meta property="og:image" content="images/001Kraus.jpg">
     <script src="cards_data.js"></script>
     <style>
-        /* --- VARIABLES & THÈME TELEGRAM --- */
+        /* --- VARIABLES & THÈME --- */
         :root {
-            --bg-color: var(--tg-theme-bg-color, #111720);
-            --text-color: var(--tg-theme-text-color, #ffffff);
-            --hint-color: var(--tg-theme-hint-color, #788796);
-            --button-color: var(--tg-theme-button-color, #2481cc);
-            --button-text-color: var(--tg-theme-button-text-color, #ffffff);
-            --secondary-bg: var(--tg-theme-secondary-bg-color, #1a232f);
-            
+            --bg-color: #111720;
+            --text-color: #ffffff;
+            --hint-color: #788796;
+            --button-color: #2481cc;
+            --button-text-color: #ffffff;
+            --secondary-bg: #1a232f;
+
             --color-common: #95a5b5;
             --color-rare: #0094ff;
             --color-epic: #a335ee;
@@ -26,8 +35,6 @@
             --halo-epic: rgba(163, 53, 238, 0.85);
             --halo-legendary: rgba(255, 170, 0, 0.95);
 
-            --foil-x: 50%;
-            --foil-y: 50%;
         }
 
         * {
@@ -280,6 +287,9 @@
         .empty-collection span { font-size: 40px; display: block; margin-bottom: 12px; }
 
         .card-frame {
+            /* Conteneur pour le badge de doublon, qui doit rester proportionnel
+               à la carte sur la grille comme dans le zoom. */
+            container-type: inline-size;
             aspect-ratio: 630 / 880;
             position: relative;
             background: transparent;
@@ -295,113 +305,248 @@
         .rarity-epic { filter: drop-shadow(0 0 11px var(--halo-epic)); }
         .rarity-legendary { filter: drop-shadow(0 0 14px var(--halo-legendary)); }
 
+        /* Exemplaires possédés : pastille sur le coin haut-droit du cadre,
+           au-dessus de l'en-tête pour ne masquer ni le nom ni les PV. */
         .card-badge-owned {
             position: absolute;
-            top: 4px;
-            right: 4px;
-            background: rgba(0, 0, 0, 0.75);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            top: 1cqw;
+            right: 1cqw;
+            background: rgba(0, 0, 0, 0.78);
+            border: 0.3cqw solid rgba(255, 255, 255, 0.35);
             color: #fff;
-            font-size: 10px;
+            font-size: max(2.8cqw, 7px);
             font-weight: 800;
-            padding: 1px 5px;
-            border-radius: 6px;
+            line-height: 1.1;
+            padding: 0.5cqw 1.4cqw;
+            border-radius: 3cqw;
             z-index: 6;
+            pointer-events: none;
         }
 
-        /* Silhouette / Emplacement de carte manquante */
-        .card-frame-locked {
-            aspect-ratio: 630 / 880;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1.5px dashed rgba(255, 255, 255, 0.15);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: var(--hint-color);
-            padding: 8px;
-            text-align: center;
-            gap: 6px;
-            user-select: none;
-            transition: transform 0.15s ease;
-        }
-        .card-frame-locked:active { transform: scale(0.97); }
-        .card-locked-num {
-            font-size: 13px;
-            font-weight: 800;
-            color: var(--hint-color);
-        }
-        .card-locked-name {
-            font-size: 10px;
-            font-weight: 600;
-            opacity: 0.65;
-            line-height: 1.2;
-            word-break: break-word;
-        }
-        .card-locked-icon {
-            font-size: 18px;
-            opacity: 0.5;
-        }
-
-        .card-wrapper-rel {
-            position: relative;
+        /* ================================================================
+           TEMPLATE DE CARTE (type Pokemon)
+           Structure : cadre -> en-tete (nom + PV) -> fenetre photo ->
+           corps (attaque) -> pied (rarete + set + numero).
+           Toutes les tailles sont en cqw : la meme carte s'affiche a
+           l'identique dans la grille, dans le booster et dans le zoom.
+           ================================================================ */
+        /* Aplats unis : aucune zone ne reçoit de dégradé ni d'ombre interne.
+           La palette de rareté tient dans 4 variables, donc une seule classe
+           re-teint toute la carte :
+           --frame-bg    surface, reprise en voile semi-transparent ;
+           --frame-deep  anneau extérieur + anneau de la fenêtre photo ;
+           --frame-ink   tout le texte ;
+           --frame-accent losanges ◆ du pied et flèche d'attaque. */
+        .tcg-card {
             width: 100%;
             height: 100%;
             display: flex;
+            position: relative;
+            border-radius: 2.6cqw;
+            overflow: hidden;
+            /* --veil : l'aplat de rareté, un peu transparent pour que le
+               fond floute de la photo transparaisse et que le cadre
+               s'accorde a l'image. Pose sur la carte ET sur les blocs. */
+            --veil: color-mix(in srgb, var(--frame-bg) 78%, transparent);
+            background: var(--veil);
+            color: var(--frame-ink);
+            box-shadow:
+                inset 0 0 0 0.5cqw var(--frame-deep),
+                inset 0 0 0 1.1cqw rgba(255, 255, 255, 0.5),
+                0 1.2cqw 2.4cqw rgba(0, 0, 0, 0.25);
+        }
+        .tcg-card.rarity-common    { --frame-accent: #95a5b5; --frame-deep: #4a5560; --frame-bg: #cfd6dc; --frame-ink: #2b3540; }
+        .tcg-card.rarity-rare      { --frame-accent: #0094ff; --frame-deep: #0057a8; --frame-bg: #d6e9ff; --frame-ink: #124a80; }
+        .tcg-card.rarity-epic      { --frame-accent: #a335ee; --frame-deep: #5c1591; --frame-bg: #ecd9fb; --frame-ink: #6b1fa8; }
+        .tcg-card.rarity-legendary { --frame-accent: #ffaa00; --frame-deep: #8a5200; --frame-bg: #ffeec7; --frame-ink: #7d4600; }
+
+
+        .tcg-frame {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 1cqw;
+            padding: 1.6cqw;
         }
 
-        .card-image {
+        /* --- En-tête : nom à gauche, PV à droite ---
+           Même aplat que l'encart d'attaque, et pas de filet : la carte ne
+           fait qu'une seule couleur, blocs et surface confondus. D'où le
+           texte en --frame-ink, le blanc sur --frame-bg ne serait pas
+           lisible. */
+        .tcg-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5cqw;
+            padding: 1.1cqw 2.2cqw;
+            min-height: 7cqw;
+            border-radius: 1.4cqw;
+            background: var(--veil);
+        }
+        .tcg-name {
+            font-size: max(4.4cqw, 9px);
+            font-weight: 800;
+            letter-spacing: 0.02em;
+            color: var(--frame-ink);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .tcg-hp {
+            flex: none;
+            display: flex;
+            align-items: baseline;
+            gap: 0.5cqw;
+            font-size: max(4cqw, 8.5px);
+            font-weight: 800;
+            color: var(--frame-ink);
+        }
+        .tcg-hp::before {
+            content: '♥';
+            font-size: max(3.4cqw, 7px);
+        }
+        .tcg-hp small {
+            font-size: max(2.2cqw, 5px);
+            font-weight: 700;
+            opacity: 0.85;
+        }
+
+        /* --- Fenêtre photo --- */
+        .tcg-art {
+            position: relative;
+            flex: 1;
+            min-height: 0;
+            border-radius: 1.2cqw;
+            overflow: hidden;
+            background: transparent;
+            box-shadow: inset 0 0 0 0.55cqw var(--frame-deep),
+                        inset 0 0 0 0.95cqw rgba(255, 255, 255, 0.55);
+        }
+        /* Les photos n'ont pas toutes le même format (paysage 4:3 comme portrait
+           3:4) alors que la fenêtre d'art est fixe : la photo est donc affichée
+           en entier (contain) sur un fond flouté de la photo elle-même, plutôt
+           que rognée. Le fond est un second <img> et non un background CSS : pas
+           de variable inline à échapper, et le navigateur ne télécharge le
+           fichier qu'une fois puisque les deux src sont identiques. */
+        .tcg-photo-bg {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 25%;
+            filter: blur(3cqw) brightness(0.5) saturate(1.4);
+            transform: scale(1.2);
+        }
+        .tcg-photo {
+            position: relative;
             width: 100%;
             height: 100%;
             object-fit: contain;
             display: block;
         }
-        .card-fallback {
+        .tcg-photo-fallback {
             width: 100%;
             height: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: var(--secondary-bg);
-            padding: 8px;
+            gap: 1cqw;
+            background: var(--frame-bg);
             text-align: center;
         }
-        .card-fallback-emoji { font-size: 34px; margin-bottom: 6px; }
-        .card-fallback-name { font-size: 10px; font-weight: 700; line-height: 1.2; }
+        .tcg-photo-fallback .emoji { font-size: max(12cqw, 22px); }
+        .tcg-photo-fallback .label {
+            font-size: max(3.2cqw, 7px);
+            font-weight: 800;
+            color: #fff;
+            opacity: 0.9;
+            padding: 0 2cqw;
+        }
 
-        /* --- EFFET HOLOGRAPHIQUE (FOIL) --- */
-        .foil-overlay {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            mix-blend-mode: color-dodge;
-            opacity: 0.85;
-            z-index: 5;
+        /* --- Pied : losanges de rareté, set, numéro --- */
+        .tcg-footer {
+            flex: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1cqw;
+            font-size: max(2.5cqw, 5.5px);
+            font-weight: 700;
+            color: var(--frame-ink);
         }
-        .foil-epic {
-            background: radial-gradient(
-                circle at var(--foil-x) var(--foil-y),
-                rgba(255, 255, 255, 0.6) 0%,
-                rgba(163, 53, 238, 0.45) 25%,
-                rgba(0, 225, 255, 0.4) 45%,
-                rgba(255, 90, 180, 0.35) 65%,
-                transparent 85%
-            );
-            background-size: 140% 140%;
+        .tcg-rarity {
+            flex: none;
+            font-size: max(2.8cqw, 6px);
+            line-height: 1;
+            letter-spacing: 0.05em;
+            color: var(--frame-accent);
         }
-        .foil-legendary {
-            background: radial-gradient(
-                circle at var(--foil-x) var(--foil-y),
-                rgba(255, 255, 255, 0.75) 0%,
-                rgba(255, 215, 0, 0.65) 20%,
-                rgba(255, 60, 60, 0.45) 40%,
-                rgba(0, 255, 200, 0.5) 60%,
-                rgba(255, 170, 0, 0.55) 80%,
-                transparent 95%
-            );
-            background-size: 160% 160%;
+        .tcg-set {
+            flex: 1;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: max(2.2cqw, 5px);
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            opacity: 0.75;
+        }
+        .tcg-num { flex: none; font-variant-numeric: tabular-nums; }
+
+
+        /* --- Carte manquante : même gabarit, tout en silhouette --- */
+        .tcg-card.is-locked {
+            --frame-accent: #55606b;
+            --frame-deep: #2a3138;
+            --frame-bg: #39424b;
+            --frame-ink: #8b95a1;
+            --veil: #39424b;
+            --frame-bg: #2b3238;
+            --frame-ink: #cfd6dc;
+        }
+        .tcg-card.is-locked .tcg-art {
+            background: #1b2127;
+        }
+        .tcg-lock {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1cqw;
+            font-size: max(9cqw, 18px);
+            opacity: 0.55;
+        }
+        .tcg-lock .num {
+            font-size: max(3.4cqw, 7px);
+            font-weight: 800;
+            color: #aab4bf;
+        }
+        .tcg-lock .unknown {
+            font-size: max(2.4cqw, 5.5px);
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .card-wrapper-rel {
+            /* Conteneur de référence : tous les cqw du template se calculent
+               sur la largeur de la carte, quelle que soit sa taille d'affichage. */
+            container-type: inline-size;
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
         }
 
         /* --- ÉCRAN D'OUVERTURE DE BOOSTER --- */
@@ -602,6 +747,7 @@
             letter-spacing: 1.5px; 
             margin-bottom: 14px; 
         }
+        /* Description complete : la carte n'en affiche que deux lignes. */
         .modal-badge-count {
             background: rgba(255,255,255,0.06);
             border: 1px solid rgba(255,255,255,0.1);
@@ -661,6 +807,35 @@
             letter-spacing: 0.5px;
             opacity: 0.8;
             pointer-events: none;
+        }
+
+        /* --- NOTIFICATIONS (toast) --- */
+        .toast {
+            position: fixed;
+            left: 50%;
+            bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+            transform: translate(-50%, 20px);
+            z-index: 300;
+            max-width: min(88vw, 420px);
+            padding: 12px 18px;
+            border-radius: 12px;
+            background: rgba(26, 35, 47, 0.97);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+            color: var(--text-color);
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 1.35;
+            text-align: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s;
+            pointer-events: none;
+        }
+        .toast.toast-show {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, 0);
         }
 
         /* --- ONGLET STATS --- */
@@ -817,7 +992,7 @@
         <h2 style="font-size: 22px; font-weight: 800; margin-bottom: 16px;">Mes Statistiques</h2>
 
         <div class="stats-hero">
-            <div class="stats-user-title" id="stats-user-name">STICS</div>
+            <div class="stats-user-title" id="stats-user-name" title="Cliquer pour changer de pseudo">STICS</div>
             <div class="stats-pct-main" id="stats-pct-big">0 %</div>
             <div class="stats-subtext" id="stats-count-sub">—</div>
         </div>
@@ -889,7 +1064,7 @@
         <div class="card-stage-container">
             <div class="card-stage-halo" id="card-halo"></div>
 
-            <div class="card-stage" onclick="handleCardClick()" onpointermove="handleFoilMove(event, this)">
+            <div class="card-stage" onclick="handleCardClick()">
                 <div class="card-3d-wrapper" id="card-3d">
                     <div class="card-face back">
                         <div class="back-pattern">
@@ -909,7 +1084,7 @@
     <!-- MODAL DÉTAILS DE LA CARTE -->
     <div class="modal-overlay" id="card-modal" onclick="closeModal(event)">
         <div class="modal-content" onclick="event.stopPropagation()">
-            <div class="modal-card-stage" id="modal-card-stage" onclick="toggleCardZoom(true)" onpointermove="handleFoilMove(event, this)"></div>
+            <div class="modal-card-stage" id="modal-card-stage" onclick="toggleCardZoom(true)"></div>
             <div class="zoom-tap-hint" onclick="toggleCardZoom(true)">🔍 Touche la carte pour zoomer</div>
             <div class="modal-rarity" id="modal-card-rarity">Rareté</div>
             <div class="modal-badge-count">Exemplaires possédés : <strong id="modal-card-count" style="color: var(--button-color); margin-left: 4px;">x0</strong></div>
@@ -918,32 +1093,33 @@
     </div>
 
     <!-- OVERLAY ZOOM PLEIN ÉCRAN -->
-    <div class="zoom-overlay" id="zoom-overlay" onclick="toggleCardZoom(false)" onpointermove="handleFoilMove(event, this)">
+    <div class="zoom-overlay" id="zoom-overlay" onclick="toggleCardZoom(false)">
         <div class="zoom-card-stage" id="zoom-card-stage"></div>
         <div class="zoom-hint">Touche pour réduire</div>
     </div>
 
+    <!-- NOTIFICATIONS -->
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
     <script>
-        // --- 1. INITIALISATION TELEGRAM ---
-        const tg = window.Telegram?.WebApp;
-        if (tg) {
-            tg.ready();
-            tg.expand();
-        }
+        // --- 1. INITIALISATION ---
+        // Site statique autonome : aucune dépendance externe, la sauvegarde
+        // vit dans le localStorage du navigateur.
 
-        // telegram-web-app.js expose CloudStorage même hors Telegram (version
-        // simulée 6.0) : chaque appel lève alors WebAppMethodUnsupported. On ne
-        // s'en sert donc que dans un vrai client, et tout appel reste protégé
-        // par un try/catch avec repli sur localStorage.
-        let cloudStorageUsable = !!tg?.initData;
-
-        function canUseCloudStorage() {
-            return cloudStorageUsable && !!tg?.CloudStorage;
+        // Vibration légère sur mobile (remplace les haptics Telegram).
+        function haptic(pattern) {
+            try {
+                if (navigator.vibrate) navigator.vibrate(pattern);
+            } catch (e) {}
         }
 
         function notify(msg) {
-            if (tg?.showAlert) tg.showAlert(msg);
-            else alert(msg);
+            const el = document.getElementById('toast');
+            if (!el) return;
+            el.textContent = msg;
+            el.classList.add('toast-show');
+            clearTimeout(notify._timer);
+            notify._timer = setTimeout(() => el.classList.remove('toast-show'), 2600);
         }
 
 // --- 2. CALCUL DYNAMIQUE VIA CARDS_DATA.JS ---
@@ -961,7 +1137,6 @@
         const RARITY_CSS = META.rarityCss || {};
         const SAVE_KEY = META.saveKey || 'tma_gacha_v1';
         const DRAW_TABLE = META.drawTable || null;
-        const FOIL_RARITIES = META.foilRarities || ['epic', 'legendary'];
 
         const TOTAL_CARDS = typeof CARDS_DB !== 'undefined'
             ? Object.values(CARDS_DB).reduce((sum, list) => sum + list.length, 0)
@@ -1039,7 +1214,7 @@
             });
         }
 
-        // --- 4. SAUVEGARDE VIA CLOUDSTORAGE & STATS ---
+        // --- 4. SAUVEGARDE (localStorage) & STATS ---
         const PACK_REGEN_TIME = 10 * 60 * 1000;
         const MAX_PACKS = 6;
 
@@ -1064,59 +1239,54 @@
 
         function saveState() {
             const data = JSON.stringify(state);
-            if (canUseCloudStorage()) {
-                try {
-                    tg.CloudStorage.setItem(SAVE_KEY, data);
-                    return;
-                } catch (e) {
-                    cloudStorageUsable = false;
-                }
-            }
             try {
                 localStorage.setItem(SAVE_KEY, data);
             } catch (e) {}
         }
 
         function loadState(callback) {
-            // Un seul passage, quelle que soit la source qui répond en premier.
-            let settled = false;
-
-            const handleLoadedData = (value) => {
-                if (settled) return;
-                settled = true;
-                if (value) {
-                    try {
-                        const parsed = JSON.parse(value);
-                        state = {
-                            ...state,
-                            ...parsed,
-                            stats: { ...state.stats, ...(parsed.stats || {}) }
-                        };
-                    } catch(e){}
-                }
-                callback();
-            };
-
-            if (!canUseCloudStorage()) {
-                handleLoadedData(readLocalSave());
-                return;
+            const value = readLocalSave();
+            if (value) {
+                try {
+                    const parsed = JSON.parse(value);
+                    state = {
+                        ...state,
+                        ...parsed,
+                        stats: { ...state.stats, ...(parsed.stats || {}) }
+                    };
+                } catch (e) {}
             }
+            callback();
+        }
 
+        // --- PSEUDO LOCAL ---
+        // Pas de compte serveur : le pseudo est stocké dans le navigateur.
+        const NAME_KEY = SAVE_KEY + '_name';
+
+        function getPlayerName() {
             try {
-                tg.CloudStorage.getItem(SAVE_KEY, (err, value) => {
-                    if (!err && value) handleLoadedData(value);
-                    else handleLoadedData(readLocalSave());
-                });
+                return (localStorage.getItem(NAME_KEY) || 'STICS').slice(0, 20);
             } catch (e) {
-                cloudStorageUsable = false;
-                handleLoadedData(readLocalSave());
-                return;
+                return 'STICS';
             }
+        }
 
-            // Filet : un client qui ne répond pas ne doit pas figer l'app.
-            setTimeout(() => {
-                if (!settled) handleLoadedData(readLocalSave());
-            }, 1500);
+        function editPlayerName() {
+            const next = window.prompt('Ton pseudo :', getPlayerName());
+            if (next === null) return;
+            const clean = next.trim().slice(0, 20);
+            try {
+                if (clean) localStorage.setItem(NAME_KEY, clean);
+                else localStorage.removeItem(NAME_KEY);
+            } catch (e) {}
+            renderStatsUI();
+        }
+
+        function initPlayerName() {
+            const el = document.getElementById('stats-user-name');
+            if (!el) return;
+            el.style.cursor = 'pointer';
+            el.addEventListener('click', editPlayerName);
         }
 
         // --- 5. GESTION DU TEMPS SÉCURISÉE (ANTI-TRICHE) & ÉNERGIE ---
@@ -1201,8 +1371,7 @@
 
         // --- 6. COMMANDES CHEATS ---
         function checkUrlCheats() {
-            const param = tg?.initDataUnsafe?.start_param 
-                || new URLSearchParams(window.location.search).get('startapp') 
+            const param = new URLSearchParams(window.location.search).get('dev')
                 || new URLSearchParams(window.location.search).get('cheat');
 
             if (!param) return;
@@ -1294,7 +1463,7 @@
                 return;
             }
 
-            if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
+            haptic(15);
 
             state.packs--;
             if (state.packs === MAX_PACKS - 1) state.lastUpdate = getTrueNow();
@@ -1354,10 +1523,7 @@
             const newBadge = document.getElementById('new-card-badge');
             const card = currentPack[cardStep];
 
-            if (tg?.HapticFeedback) {
-                if (card.rarity === 'legendary') tg.HapticFeedback.notificationOccurred('success');
-                else tg.HapticFeedback.impactOccurred('heavy');
-            }
+            haptic(card.rarity === 'legendary' ? [20, 40, 20] : 25);
 
             const isNew = !(state.inventory[card.id] > 0);
             if (isNew) newBadge.classList.add('visible');
@@ -1395,55 +1561,99 @@
                 halo.classList.remove('active');
                 document.getElementById('opening-screen').style.display = 'none';
                 renderEnergyUI();
-                if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+                haptic([15, 30, 15]);
             }
         }
 
         // --- 9. GÉNÉRATEURS VISUELS DE CARTES ---
-        function generateCardHTML(card) {
-            const isFoil = FOIL_RARITIES.includes(card.rarity);
-            const foilLayer = isFoil ? `<div class="foil-overlay foil-${card.rarity}"></div>` : '';
+        // Index inversé id -> set, construit depuis CARDS_META.albums : le nom du
+        // set affiché sur la carte vient donc du manifeste, jamais d'une liste
+        // écrite dans le HTML.
+        const CARD_SET_INDEX = (() => {
+            const index = {};
+            Object.values(META.albums || {}).forEach(group => {
+                Object.entries(group.sets || {}).forEach(([setName, ids]) => {
+                    (ids || []).forEach(id => { index[id] = setName; });
+                });
+            });
+            return index;
+        })();
 
-            if (card.image && card.image.trim() !== '') {
-                return `
-                    <div class="card-wrapper-rel">
-                        <img class="card-image" src="${card.image}" alt="${card.name}" loading="lazy" />
-                        ${foilLayer}
-                    </div>
-                `;
+        function cardNumberLabel(cardId) {
+            const setName = CARD_SET_INDEX[cardId];
+            if (!setName) return cardId;
+            for (const group of Object.values(META.albums || {})) {
+                const ids = (group.sets || {})[setName];
+                if (ids) return `${cardId}/${String(ids.length).padStart(3, '0')}`;
             }
+            return cardId;
+        }
+
+        function generateCardHTML(card) {
+
+            const hasPhoto = card.image && card.image.trim() !== '';
+            const backdrop = hasPhoto
+                ? `<img class="tcg-photo-bg" src="${card.image}" alt="" aria-hidden="true" loading="lazy" />`
+                : '';
+            const art = hasPhoto
+                ? `<img class="tcg-photo" src="${card.image}" alt="${card.name}" loading="lazy" />`
+                : `<div class="tcg-photo-fallback">
+                       <div class="emoji">${card.emoji}</div>
+                       <div class="label">${card.name}</div>
+                   </div>`;
+
+            const hp = card.hp
+                ? `<span class="tcg-hp">${card.hp}<small>PV</small></span>`
+                : '';
+
             return `
                 <div class="card-wrapper-rel">
-                    <div class="card-fallback">
-                        <div class="card-fallback-emoji">${card.emoji}</div>
-                        <div class="card-fallback-name">${card.name}</div>
+                    <div class="tcg-card rarity-${card.rarity}">
+                        ${backdrop}
+                        <div class="tcg-frame">
+                            <div class="tcg-header">
+                                <span class="tcg-name">${card.name}</span>
+                                ${hp}
+                            </div>
+                            <div class="tcg-art">
+                                ${art}
+                            </div>
+                            <div class="tcg-footer">
+                                <span class="tcg-rarity">${raritySymbol(card.rarity)}</span>
+                                <span class="tcg-set">${CARD_SET_INDEX[card.id] || ''}</span>
+                                <span class="tcg-num">${cardNumberLabel(card.id)}</span>
+                            </div>
+                        </div>
                     </div>
-                    ${foilLayer}
                 </div>
             `;
         }
 
-        function handleFoilMove(e, container) {
-            const rect = container.getBoundingClientRect();
-            const clientX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
-            const clientY = e.clientY || (e.touches && e.touches[0].clientY) || 0;
-
-            const x = Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100));
-            const y = Math.max(0, Math.min(100, ((clientY - rect.top) / rect.height) * 100));
-
-            document.documentElement.style.setProperty('--foil-x', `${x}%`);
-            document.documentElement.style.setProperty('--foil-y', `${y}%`);
-        }
-
-        if (window.DeviceOrientationEvent) {
-            window.addEventListener('deviceorientation', (e) => {
-                if (e.gamma !== null && e.beta !== null) {
-                    const x = Math.max(10, Math.min(90, ((e.gamma + 45) / 90) * 100));
-                    const y = Math.max(10, Math.min(90, ((e.beta - 20) / 90) * 100));
-                    document.documentElement.style.setProperty('--foil-x', `${x}%`);
-                    document.documentElement.style.setProperty('--foil-y', `${y}%`);
-                }
-            }, true);
+        // Emplacement d'une carte non possédée : même gabarit, tout en silhouette,
+        // pour que la grille des albums reste alignée avec la collection.
+        function generateLockedCardHTML(cardId, card) {
+            return `
+                <div class="card-wrapper-rel">
+                    <div class="tcg-card is-locked">
+                        <div class="tcg-frame">
+                            <div class="tcg-header">
+                                <span class="tcg-name">???</span>
+                            </div>
+                            <div class="tcg-art">
+                                <div class="tcg-lock">
+                                    <span>🔒</span>
+                                    <span class="num">N°${cardId}</span>
+                                    <span class="unknown">Non trouvée</span>
+                                </div>
+                            </div>
+                            <div class="tcg-footer">
+                                <span class="tcg-set">${CARD_SET_INDEX[cardId] || ''}</span>
+                                <span class="tcg-num">${cardNumberLabel(cardId)}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
         }
 
         // --- 10. GESTION DES COLLECTIONS & ALBUMS ---
@@ -1461,7 +1671,7 @@
                 renderGlobalCollection();
             }
 
-            if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
+            haptic(5);
         }
 
         function selectAlbumCategory(cat) {
@@ -1472,20 +1682,20 @@
 
             currentAlbumSet = Object.keys(ALBUMS_DB[cat].sets)[0] || null;
             renderAlbumsView();
-            if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
+            haptic(5);
         }
 
         function selectAlbumSet(setName) {
             currentAlbumSet = setName;
             renderAlbumsView();
-            if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
+            haptic(5);
         }
 
         function toggleAlbumMissingOnly() {
             isAlbumFilterMissingOnly = !isAlbumFilterMissingOnly;
             document.getElementById('album-filter-missing-btn').classList.toggle('active', isAlbumFilterMissingOnly);
             renderAlbumGrid();
-            if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
+            haptic(5);
         }
 
         // Vue 1 : Grille globale
@@ -1598,19 +1808,13 @@
                     cardEl.onclick = () => openModal(card, count);
                     grid.appendChild(cardEl);
                 } else {
-                    // Carte manquante -> Emplacement silhouette
+                    // Carte manquante -> même gabarit, en silhouette
                     const lockedEl = document.createElement('div');
-                    lockedEl.className = 'card-frame-locked';
-                    lockedEl.innerHTML = `
-                        <div class="card-locked-icon">🔒</div>
-                        <div class="card-locked-num">#${id}</div>
-                        <div class="card-locked-name">${card ? card.name : 'Inconnue'}</div>
-                    `;
+                    lockedEl.className = 'card-frame';
+                    lockedEl.innerHTML = generateLockedCardHTML(id, card);
                     lockedEl.onclick = () => {
-                        if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('warning');
-                        const msg = `N°${id} (${card ? card.name : '?'}) n'a pas encore été trouvée dans les boosters !`;
-                        if (tg?.showAlert) tg.showAlert(msg);
-                        else alert(msg);
+                        haptic([30, 60, 30]);
+                        notify(`N°${id} (${card ? card.name : '?'}) n'a pas encore été trouvée dans les boosters !`);
                     };
                     grid.appendChild(lockedEl);
                 }
@@ -1638,7 +1842,7 @@
         let currentModalCard = null;
 
         function openModal(card, count) {
-            if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
+            haptic(8);
 
             currentModalCard = card;
 
@@ -1668,10 +1872,10 @@
                 zoomStage.style.filter = `drop-shadow(0 0 30px var(--halo-${currentModalCard.rarity}))`;
                 zoomStage.innerHTML = generateCardHTML(currentModalCard);
                 zoomOverlay.classList.add('active');
-                if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
+                haptic(8);
             } else {
                 zoomOverlay.classList.remove('active');
-                if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
+                haptic(8);
             }
         }
 
@@ -1698,10 +1902,8 @@
         function renderStatsUI() {
             if (typeof CARDS_DB === 'undefined') return;
 
-            const user = tg?.initDataUnsafe?.user;
-            if (user?.first_name) {
-                document.getElementById('stats-user-name').innerText = user.first_name + (user.last_name ? ` ${user.last_name}` : '');
-            }
+            const el = document.getElementById('stats-user-name');
+            if (el) el.textContent = getPlayerName();
 
             renderRarityStatRows();
 
@@ -1767,7 +1969,7 @@
 
             if (tabId === 'collection') renderCollection();
             if (tabId === 'stats') renderStatsUI();
-            if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
+            haptic(5);
         }
 
         // --- 14. DÉMARRAGE ---
@@ -1779,6 +1981,7 @@
 
         function boot() {
             checkUrlCheats();
+            initPlayerName();
             renderEnergyUI();
             renderAlbumCategoryPills();
             renderRarityStatRows();

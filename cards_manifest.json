@@ -1,7 +1,7 @@
 {
   "version": 1,
   "seed": 1337,
-  "save_key": "tma_gacha_v2",
+  "save_key": "tma_gacha_v3",
   "default_emoji": "🎺",
   "rarities": [
     "common",
@@ -47,18 +47,14 @@
       "legendary": 100.0
     }
   },
-  "foil_rarities": [
-    "epic",
-    "legendary"
-  ],
   "albums": [
     {
-      "key": "stics_a",
-      "title": "STICS",
-      "icon": "🎺",
+      "key": "non_classe",
+      "title": "Non classé",
+      "icon": "🗂",
       "sets": [
         {
-          "name": "STICS 1",
+          "name": "Non classé 1",
           "ids": [
             "001",
             "002",
@@ -69,7 +65,151 @@
             "007",
             "008",
             "009",
-            "010"
+            "010",
+            "011",
+            "012"
+          ]
+        },
+        {
+          "name": "Non classé 2",
+          "ids": [
+            "013",
+            "014",
+            "015",
+            "016",
+            "017",
+            "018",
+            "019",
+            "020",
+            "021",
+            "022",
+            "023",
+            "024"
+          ]
+        },
+        {
+          "name": "Non classé 3",
+          "ids": [
+            "025",
+            "026",
+            "027",
+            "028",
+            "029",
+            "030",
+            "031",
+            "032",
+            "033",
+            "034",
+            "035",
+            "036"
+          ]
+        },
+        {
+          "name": "Non classé 4",
+          "ids": [
+            "037",
+            "038",
+            "039",
+            "040",
+            "041",
+            "042",
+            "043",
+            "044",
+            "045",
+            "046",
+            "047",
+            "048"
+          ]
+        },
+        {
+          "name": "Non classé 5",
+          "ids": [
+            "049",
+            "050",
+            "051",
+            "052",
+            "053",
+            "054",
+            "055",
+            "056",
+            "057",
+            "058",
+            "059",
+            "060"
+          ]
+        },
+        {
+          "name": "Non classé 6",
+          "ids": [
+            "061",
+            "062",
+            "063",
+            "064",
+            "065",
+            "066",
+            "067",
+            "068",
+            "069",
+            "070",
+            "071",
+            "072"
+          ]
+        },
+        {
+          "name": "Non classé 7",
+          "ids": [
+            "073",
+            "074",
+            "075",
+            "076",
+            "077",
+            "078",
+            "079",
+            "080",
+            "081",
+            "082",
+            "083",
+            "084"
+          ]
+        },
+        {
+          "name": "Non classé 8",
+          "ids": [
+            "085",
+            "086",
+            "087",
+            "088",
+            "089",
+            "090",
+            "091",
+            "092",
+            "093",
+            "094",
+            "095",
+            "096"
+          ]
+        },
+        {
+          "name": "Non classé 9",
+          "ids": [
+            "097",
+            "098",
+            "099",
+            "100",
+            "101",
+            "102",
+            "103",
+            "104",
+            "105",
+            "106",
+            "107",
+            "108"
+          ]
+        },
+        {
+          "name": "Non classé 10",
+          "ids": [
+            "109"
           ]
         }
       ]
@@ -78,84 +218,1530 @@
   "cards": [
     {
       "id": "001",
-      "name": "Kraus",
+      "name": ">",
       "rarity": "common",
       "emoji": "🎺",
-      "image": "images/001Kraus.jpg",
-      "source": "photo_2026-10-04_23-10-04.jpg"
+      "image": "images/>_Commun.jpg",
+      "source": "photo_2026-10-04_23-10-04.jpg",
+      "hp": 60,
+      "attack": {
+        "name": "Roulade de poignet",
+        "power": 30
+      },
+      "description": "Répétition du kiosque, immobile depuis toujours."
     },
     {
       "id": "002",
-      "name": "Braus",
+      "name": "2BD0D",
       "rarity": "common",
       "emoji": "🎺",
-      "image": "images/002Braus.jpg",
-      "source": "photo_2026-10-04_23-10-06 (2).jpg"
+      "image": "images/2BD0D_Peu commun.jpg",
+      "source": "photo_2026-10-04_23-10-06 (2).jpg",
+      "hp": 60,
+      "attack": {
+        "name": "Montée de poignet",
+        "power": 20
+      },
+      "description": "Bord du parvis, verni depuis toujours."
     },
     {
       "id": "003",
-      "name": "Naio",
-      "rarity": "common",
+      "name": "Allemand tordu",
+      "rarity": "rare",
       "emoji": "🎺",
-      "image": "images/003Naio.jpg",
-      "source": "photo_2026-10-04_23-10-06.jpg"
+      "image": "images/Allemand tordu_Rare.jpg",
+      "source": "photo_2026-10-04_23-10-06.jpg",
+      "hp": 70,
+      "attack": {
+        "name": "Redoublement",
+        "power": 40
+      },
+      "description": "Bord usé du toit."
     },
     {
       "id": "004",
-      "name": "Criio",
-      "rarity": "rare",
+      "name": "Arbre mort",
+      "rarity": "common",
       "emoji": "🎺",
-      "image": "images/004Criio.jpg",
-      "source": "photo_2026-10-04_23-11-03.jpg"
+      "image": "images/Arbre mort_Commun.jpg",
+      "source": "photo_2026-10-04_23-11-03.jpg",
+      "hp": 90,
+      "attack": {
+        "name": "Coup de manche",
+        "power": 60
+      },
+      "description": "Bravoure immobile sur la dernière marche."
     },
     {
       "id": "005",
-      "name": "Wais",
-      "rarity": "epic",
+      "name": "Attention Grand V",
+      "rarity": "common",
       "emoji": "🎺",
-      "image": "images/005Wais.jpg",
-      "source": "photo_2026-10-04_23-11-10.jpg"
+      "image": "images/Attention Grand V_Peu commun.jpg",
+      "source": "photo_2026-10-04_23-11-10.jpg",
+      "hp": 130,
+      "attack": {
+        "name": "Longue tenue",
+        "power": 80
+      },
+      "description": "Silence du toit, trempé depuis toujours."
     },
     {
       "id": "006",
-      "name": "Orrarar",
-      "rarity": "legendary",
+      "name": "Attention Y",
+      "rarity": "common",
       "emoji": "🎺",
-      "image": "images/006Orrarar.jpg",
-      "source": "photo_2026-10-04_23-11-15.jpg"
+      "image": "images/Attention Y_Peu commun.jpg",
+      "source": "photo_2026-10-04_23-11-15.jpg",
+      "hp": 160,
+      "attack": {
+        "name": "Tempo tenu",
+        "power": 100
+      },
+      "description": "Contretemps sec, Bâton de chef doré et Silence trempé."
     },
     {
       "id": "007",
-      "name": "Drais",
+      "name": "Aventurier",
       "rarity": "common",
       "emoji": "🎺",
-      "image": "images/007Drais.jpg",
-      "source": "photo_2026-10-04_23-11-20.jpg"
+      "image": "images/Aventurier_Commun.jpg",
+      "source": "photo_2026-10-04_23-11-20.jpg",
+      "hp": 80,
+      "attack": {
+        "name": "Contretems de rue",
+        "power": 30
+      },
+      "description": "Répétition dorée, Bravoure sèche et Tempo fier."
     },
     {
       "id": "008",
-      "name": "Vararis",
-      "rarity": "rare",
+      "name": "Baguette de Sorcier",
+      "rarity": "epic",
       "emoji": "🎺",
-      "image": "images/008Vararis.jpg",
-      "source": "photo_2026-10-04_23-11-25.jpg"
+      "image": "images/112Baguette de Sorcier_Epique.jpg",
+      "source": "photo_2026-10-04_23-11-25.jpg",
+      "hp": 90,
+      "attack": {
+        "name": "Contretems de rue",
+        "power": 40
+      },
+      "description": "Bravoure muette, Poignée nocturne et Bâton immobile."
     },
     {
       "id": "009",
+      "name": "Bambou",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/Bambou_Commun.jpg",
+      "source": "photo_2026-10-04_23-11-31.jpg",
+      "hp": 80,
+      "attack": {
+        "name": "Cascade de coups",
+        "power": 20
+      },
+      "description": "Bord du bateau, verni depuis toujours."
+    },
+    {
+      "id": "010",
+      "name": "Baton Apéro",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/Baton Apéro_Commun.jpg",
+      "source": "photo_2026-10-04_23-11-37.jpg",
+      "hp": 60,
+      "attack": {
+        "name": "Sortie de manche",
+        "power": 40
+      },
+      "description": "Rebond trempé à l'aube."
+    },
+    {
+      "id": "011",
+      "name": "Baton artistique",
+      "rarity": "rare",
+      "emoji": "🎺",
+      "image": "images/Baton artistique_Rare.jpg",
+      "source": "1773639.jpg",
+      "description": "Contretemps qui frappe le portail quand la pluie tombe.",
+      "hp": 60,
+      "attack": {
+        "name": "Croisière des mains",
+        "power": 20
+      }
+    },
+    {
+      "id": "012",
+      "name": "Baton bien trié",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/Baton bien trié_Commun.jpg",
+      "source": "B-ton.webp",
+      "description": "Fouet verni sur les toits.",
+      "hp": 120,
+      "attack": {
+        "name": "Final au poignet",
+        "power": 50
+      }
+    },
+    {
+      "id": "013",
+      "name": "Baton coincé",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/Baton coincé_Commun.jpg",
+      "source": "B-ton_de_d-bogage.webp",
+      "description": "Bord usé les jours de fête.",
+      "hp": 60,
+      "attack": {
+        "name": "Reprise de tempo",
+        "power": 20
+      }
+    },
+    {
+      "id": "014",
+      "name": "Baton croco dans l'eau",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/Baton croco dans l'eau_Commun.jpg",
+      "source": "IMG-20250614-WA0008.jpg",
+      "description": "Marche légère, Coup rêveur et Ronde fêlée.",
+      "hp": 70,
+      "attack": {
+        "name": "Point d'appui",
+        "power": 40
+      }
+    },
+    {
+      "id": "015",
+      "name": "Baton D'anniversaire",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/Baton D'anniversaire_Peu commun.jpg",
+      "source": "IMG-20250626-WA0002.jpg",
+      "description": "Passe usée sur les quais.",
+      "hp": 80,
+      "attack": {
+        "name": "Final au poignet",
+        "power": 40
+      }
+    },
+    {
+      "id": "016",
+      "name": "Baton d'Asclépios",
+      "rarity": "rare",
+      "emoji": "🎺",
+      "image": "images/Baton d'Asclépios_Rare.jpg",
+      "source": "IMG-20250720-WA0000.jpg",
+      "description": "Tempo clair à l'aube.",
+      "hp": 60,
+      "attack": {
+        "name": "Cascade de coups",
+        "power": 30
+      }
+    },
+    {
+      "id": "017",
+      "name": "Baton de la cascade",
+      "rarity": "epic",
+      "emoji": "🎺",
+      "image": "images/Baton de la cascade_Epique.jpg",
+      "source": "IMG-20250726-WA0000.jpg",
+      "description": "Bravoure solennelle, Marche nocturne et Bravoure rêveuse.",
+      "hp": 60,
+      "attack": {
+        "name": "Ostinato de bâton",
+        "power": 20
+      }
+    },
+    {
+      "id": "018",
+      "name": "Baton en cage",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/Baton en cage_Commun.jpg",
+      "source": "IMG-20250730-WA0001.jpg",
+      "description": "Montée têtue du quai.",
+      "hp": 80,
+      "attack": {
+        "name": "Bâton levé",
+        "power": 30
+      }
+    },
+    {
+      "id": "019",
+      "name": "Baton en soirée",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/Baton en soirée_Peu commun.jpg",
+      "source": "IMG-20250804-WA0002.jpg",
+      "description": "Manche immobile après le dernier coup.",
+      "hp": 80,
+      "attack": {
+        "name": "Tempo de bâton",
+        "power": 30
+      }
+    },
+    {
+      "id": "020",
+      "name": "Baton gris",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/Baton gris_Commun.jpg",
+      "source": "IMG-20250810-WA0013.jpg",
+      "description": "Tempo usé, Tempo trempé et Balancement muet.",
+      "hp": 90,
+      "attack": {
+        "name": "Montée de poignet",
+        "power": 30
+      }
+    },
+    {
+      "id": "021",
+      "name": "Baton Magique",
+      "rarity": "epic",
+      "emoji": "🎺",
+      "image": "images/Baton Magique_Epique.jpg",
+      "source": "IMG-20250822-WA0000.jpg",
+      "description": "Bâton lourd, Répétition usée et Montée sèche.",
+      "hp": 90,
+      "attack": {
+        "name": "Frappe sèche",
+        "power": 40
+      }
+    },
+    {
+      "id": "022",
+      "name": "Baton magnum",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/Baton magnum_Commun.jpg",
+      "source": "IMG-20250902-WA0048.jpg",
+      "description": "Montée qui tourne le bateau à l'aube.",
+      "hp": 60,
+      "attack": {
+        "name": "Croisière des mains",
+        "power": 20
+      }
+    },
+    {
+      "id": "023",
+      "name": "Baton randonneur",
+      "rarity": "rare",
+      "emoji": "🎺",
+      "image": "images/Baton randonneur_Rare.jpg",
+      "source": "IMG-20250908-WA0006.jpg",
+      "description": "Bâton de chef qui signale le square après le dernier coup.",
+      "hp": 70,
+      "attack": {
+        "name": "Rebond croisé",
+        "power": 40
+      }
+    },
+    {
+      "id": "024",
+      "name": "Baton sur Yvette",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/ Baton sur Yvette_Peu commun.jpg",
+      "source": "IMG-20250911-WA0000.jpg",
+      "description": "Balade vernie du faubourg.",
+      "hp": 90,
+      "attack": {
+        "name": "Coup de manche",
+        "power": 30
+      }
+    },
+    {
+      "id": "025",
+      "name": "Baton table",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/Baton table_Commun.jpg",
+      "source": "IMG-20250911-WA0005.jpg",
+      "description": "Montée fêlée, Manche fêlé et Montée fêlée.",
+      "hp": 60,
+      "attack": {
+        "name": "Frappe de dos",
+        "power": 20
+      }
+    },
+    {
+      "id": "026",
+      "name": "Baton victorieux",
+      "rarity": "epic",
+      "emoji": "🎺",
+      "image": "images/Baton victorieux_Epique.jpg",
+      "source": "IMG-20250917-WA0021.jpg",
+      "description": "Balade solennelle du kiosque.",
+      "hp": 90,
+      "attack": {
+        "name": "Descente d'aile",
+        "power": 40
+      }
+    },
+    {
+      "id": "027",
+      "name": "Batonzooka",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/Batonzooka_Peu commun.jpg",
+      "source": "IMG-20250920-WA0000.jpg",
+      "description": "Cadence du canal, endormie depuis toujours.",
+      "hp": 80,
+      "attack": {
+        "name": "Frappe de dos",
+        "power": 40
+      }
+    },
+    {
+      "id": "028",
+      "name": "Batteur sous baton",
+      "rarity": "rare",
+      "emoji": "🎺",
+      "image": "images/Batteur sous baton_Rare.jpg",
+      "source": "IMG-20250920-WA0002.jpg",
+      "description": "Balancement nocturne pendant la descente.",
+      "hp": 70,
+      "attack": {
+        "name": "Balancement lent",
+        "power": 40
+      }
+    },
+    {
+      "id": "029",
+      "name": "Belle bite",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/Belle bite_Peu commmun.jpg",
+      "source": "IMG-20250920-WA0003.jpg",
+      "description": "Répétition trempée sur les portails.",
+      "hp": 90,
+      "attack": {
+        "name": "Relance",
+        "power": 30
+      }
+    },
+    {
+      "id": "030",
+      "name": "Bello bito",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/Bello bito_Peu commun.jpg",
+      "source": "IMG-20250920-WA0008.jpg",
+      "description": "Tempo du toit, endormi depuis toujours.",
+      "hp": 70,
+      "attack": {
+        "name": "Final au poignet",
+        "power": 40
+      }
+    },
+    {
+      "id": "031",
+      "name": "Béquille en route",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/Béquille en route_Commun.jpg",
+      "source": "IMG-20250920-WA0009.jpg",
+      "description": "Cadence du portail, endormie depuis toujours.",
+      "hp": 110,
+      "attack": {
+        "name": "Point final",
+        "power": 40
+      }
+    },
+    {
+      "id": "032",
+      "name": "Béquilles",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/Béquilles_commun.jpg",
+      "source": "IMG-20250920-WA0010.jpg",
+      "description": "Coup qui claque le canal à la nuit tombée.",
+      "hp": 90,
+      "attack": {
+        "name": "Rebond sec",
+        "power": 40
+      }
+    },
+    {
+      "id": "033",
+      "name": "Bien Armé",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/Bien Armé_Peu commun.jpg",
+      "source": "IMG-20250924-WA0005.jpg",
+      "description": "Passe du trottoir, vernie depuis toujours.",
+      "hp": 80,
+      "attack": {
+        "name": "Contretems de rue",
+        "power": 20
+      }
+    },
+    {
+      "id": "034",
+      "name": "Bof",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/Bof_Commun.jpg",
+      "source": "IMG-20250924-WA0006.jpg",
+      "description": "Marche qui ravive le pont avant le passage.",
+      "hp": 60,
+      "attack": {
+        "name": "Roulade de poignet",
+        "power": 30
+      }
+    },
+    {
+      "id": "035",
+      "name": "Bois de cerf",
+      "rarity": "rare",
+      "emoji": "🎺",
+      "image": "images/Bois de cerf_Rare.jpg",
+      "source": "IMG-20250924-WA0017.jpg",
+      "description": "Montée qui ferme le square quand la pluie tombe.",
+      "hp": 60,
+      "attack": {
+        "name": "Silence imposé",
+        "power": 40
+      }
+    },
+    {
+      "id": "036",
+      "name": "Branche morte",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/Branche morte_Commun.jpg",
+      "source": "IMG-20250924-WA0018.jpg",
+      "description": "Cadence claire, Frappe solennelle et Contretemps endormi.",
+      "hp": 100,
+      "attack": {
+        "name": "Double frappe",
+        "power": 40
+      }
+    },
+    {
+      "id": "037",
+      "name": "Buche Rez 2",
+      "rarity": "rare",
+      "emoji": "🎺",
+      "image": "images/Buche Rez 2_Rare.jpg",
+      "source": "IMG-20250927-WA0012.jpg",
+      "description": "Cadence vernie du trottoir.",
+      "hp": 90,
+      "attack": {
+        "name": "Fouet du chef",
+        "power": 40
+      }
+    },
+    {
+      "id": "038",
+      "name": "Capture epique",
+      "rarity": "epic",
+      "emoji": "🎺",
+      "image": "images/Capture epique_Epique.jpg",
+      "source": "IMG-20250927-WA0015.jpg",
+      "description": "Fouet immobile sur les quais.",
+      "hp": 60,
+      "attack": {
+        "name": "Reprise de tempo",
+        "power": 30
+      }
+    },
+    {
+      "id": "039",
+      "name": "Christian Baton de Noël",
+      "rarity": "legendary",
+      "emoji": "🎺",
+      "image": "images/088Christian Baton de Noël_Légendaire.jpg",
+      "source": "IMG-20250927-WA0016.jpg",
+      "description": "Cadence fière du portail.",
+      "hp": 90,
+      "attack": {
+        "name": "Balancement lent",
+        "power": 30
+      }
+    },
+    {
+      "id": "040",
       "name": "Criix",
       "rarity": "common",
       "emoji": "🎺",
       "image": "images/009Criix.jpg",
-      "source": "photo_2026-10-04_23-11-31.jpg"
+      "source": "IMG-20250929-WA0009.jpg",
+      "description": "Bâton de chef du faubourg, solennel depuis toujours.",
+      "hp": 80,
+      "attack": {
+        "name": "Frappe de dos",
+        "power": 30
+      }
     },
     {
-      "id": "010",
-      "name": "Tays",
+      "id": "041",
+      "name": "Criterium",
       "rarity": "common",
       "emoji": "🎺",
-      "image": "images/010Tays.jpg",
-      "source": "photo_2026-10-04_23-11-37.jpg"
+      "image": "images/Criterium_Commun.jpg",
+      "source": "IMG-20250930-WA0001.jpg",
+      "description": "Balade qui balance le kiosque à la nuit tombée.",
+      "hp": 90,
+      "attack": {
+        "name": "Roulade d'épaule",
+        "power": 50
+      }
+    },
+    {
+      "id": "042",
+      "name": "Cuillère suspendu",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/Cuillère suspendu_Commun.jpg",
+      "source": "IMG-20250930-WA0002.jpg",
+      "description": "Frappe du parvis, nocturne depuis toujours.",
+      "hp": 70,
+      "attack": {
+        "name": "Silence imposé",
+        "power": 20
+      }
+    },
+    {
+      "id": "043",
+      "name": "Daronne de Seb",
+      "rarity": "legendary",
+      "emoji": "🎺",
+      "image": "images/Daronne de Seb_Légendaire.jpg",
+      "source": "IMG-20250930-WA0003.jpg",
+      "description": "Frappe dorée avant le passage.",
+      "hp": 90,
+      "attack": {
+        "name": "Rebond sec",
+        "power": 40
+      }
+    },
+    {
+      "id": "044",
+      "name": "Diablotin",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/Diablotin_Peu commun.jpg",
+      "source": "IMG-20250930-WA0017.jpg",
+      "description": "Contretemps clair tout le long de la rue.",
+      "hp": 90,
+      "attack": {
+        "name": "Roulade d'épaule",
+        "power": 40
+      }
+    },
+    {
+      "id": "045",
+      "name": "Dragon oriental",
+      "rarity": "epic",
+      "emoji": "🎺",
+      "image": "images/Dragon oriental_Epique.jpg",
+      "source": "IMG-20250930-WA0018.jpg",
+      "description": "Cadence nocturne sur les portails.",
+      "hp": 150,
+      "attack": {
+        "name": "Sortie de manche",
+        "power": 60
+      }
+    },
+    {
+      "id": "046",
+      "name": "Duo au bord du lac",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/Duo au bord du lac_Commun.jpg",
+      "source": "IMG-20251001-WA0000.jpg",
+      "description": "Bâton qui danse le parvis après le dernier coup.",
+      "hp": 90,
+      "attack": {
+        "name": "Fouet du chef",
+        "power": 40
+      }
+    },
+    {
+      "id": "047",
+      "name": "Duo Mystérieux",
+      "rarity": "epic",
+      "emoji": "🎺",
+      "image": "images/Duo Mystérieux_Epique.jpg",
+      "source": "IMG-20251002-WA0000.jpg",
+      "description": "Fouet du faubourg, verni depuis toujours.",
+      "hp": 70,
+      "attack": {
+        "name": "Rebond croisé",
+        "power": 20
+      }
+    },
+    {
+      "id": "048",
+      "name": "Enfant ramassant biere",
+      "rarity": "epic",
+      "emoji": "🎺",
+      "image": "images/Enfant ramassant biere_Epique.jpg",
+      "source": "IMG-20251002-WA0003.jpg",
+      "description": "Frappe endormie du bateau.",
+      "hp": 80,
+      "attack": {
+        "name": "Reprise de tempo",
+        "power": 30
+      }
+    },
+    {
+      "id": "049",
+      "name": "Entrepot",
+      "rarity": "rare",
+      "emoji": "🎺",
+      "image": "images/Entrepot_Rare.jpg",
+      "source": "IMG-20251003-WA0005.jpg",
+      "description": "Coup trempé sur les trottoirs.",
+      "hp": 60,
+      "attack": {
+        "name": "Roulade d'épaule",
+        "power": 40
+      }
+    },
+    {
+      "id": "050",
+      "name": "Epee wtf",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/Epee wtf_Peu commun.jpg",
+      "source": "IMG-20251003-WA0006.jpg",
+      "description": "Manche solennel, Passe fêlée et Cadence claire.",
+      "hp": 80,
+      "attack": {
+        "name": "Roulade de poignet",
+        "power": 30
+      }
+    },
+    {
+      "id": "051",
+      "name": "Feu de bois",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/Feu de bois_peu commun.jpg",
+      "source": "IMG-20251003-WA0009.jpg",
+      "description": "Rebond clair du trottoir.",
+      "hp": 80,
+      "attack": {
+        "name": "Point d'appui",
+        "power": 20
+      }
+    },
+    {
+      "id": "052",
+      "name": "Flou artistique",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/081Flou artistique_Commun.jpg",
+      "source": "IMG-20251003-WA0011.jpg",
+      "description": "Silence qui balance le toit sur la dernière marche.",
+      "hp": 90,
+      "attack": {
+        "name": "Coup de manche",
+        "power": 20
+      }
+    },
+    {
+      "id": "053",
+      "name": "Flou sur Yvette",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/Flou sur Yvette_Commun.jpg",
+      "source": "IMG-20251003-WA0012.jpg",
+      "description": "Bord du kiosque, fêlé depuis toujours.",
+      "hp": 70,
+      "attack": {
+        "name": "Relance",
+        "power": 30
+      }
+    },
+    {
+      "id": "054",
+      "name": "Forêt",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/Forêt_Commun.jpg",
+      "source": "IMG-20251003-WA0013.jpg",
+      "description": "Fouet qui signale le parvis après le dernier coup.",
+      "hp": 90,
+      "attack": {
+        "name": "Ostinato de bâton",
+        "power": 30
+      }
+    },
+    {
+      "id": "055",
+      "name": "Fresco",
+      "rarity": "legendary",
+      "emoji": "🎺",
+      "image": "images/087Fresco_Legendaire.jpg",
+      "source": "IMG-20251003-WA0017.jpg",
+      "description": "Passe immobile sur les escaliers.",
+      "hp": 130,
+      "attack": {
+        "name": "Cascade de coups",
+        "power": 90
+      }
+    },
+    {
+      "id": "056",
+      "name": "Fresco loin",
+      "rarity": "rare",
+      "emoji": "🎺",
+      "image": "images/Fresco loin_Rare.jpg",
+      "source": "IMG-20251003-WA0019.jpg",
+      "description": "Passe du parvis, trempée depuis toujours.",
+      "hp": 70,
+      "attack": {
+        "name": "Passage des mains",
+        "power": 30
+      }
+    },
+    {
+      "id": "057",
+      "name": "Gamma",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/Gamma_Peu commun.jpg",
+      "source": "IMG-20251003-WA0020.jpg",
+      "description": "Silence sec du trottoir.",
+      "hp": 120,
+      "attack": {
+        "name": "Coup de manche",
+        "power": 60
+      }
+    },
+    {
+      "id": "058",
+      "name": "Gardien des bois",
+      "rarity": "rare",
+      "emoji": "🎺",
+      "image": "images/Gardien des bois_Rare.jpg",
+      "source": "IMG-20251003-WA0021.jpg",
+      "description": "Coup rêveur après le dernier coup.",
+      "hp": 90,
+      "attack": {
+        "name": "Rebond sec",
+        "power": 30
+      }
+    },
+    {
+      "id": "059",
+      "name": "Gif sur Baton",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/083 Gif sur Baton_Peu commun.jpg",
+      "source": "IMG-20251003-WA0022.jpg",
+      "description": "Contretemps endormi, Tempo fêlé et Tempo rêveur.",
+      "hp": 60,
+      "attack": {
+        "name": "Rebond sec",
+        "power": 40
+      }
+    },
+    {
+      "id": "060",
+      "name": "Gingembre ?",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/Gingembre ?_Commun.jpg",
+      "source": "IMG-20251003-WA0023.jpg",
+      "description": "Balade qui accélère le faubourg au milieu du silence.",
+      "hp": 90,
+      "attack": {
+        "name": "Huit battements",
+        "power": 20
+      }
+    },
+    {
+      "id": "061",
+      "name": "Gourdin",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/Gourdin_Peu Commun.jpg",
+      "source": "IMG-20251003-WA0027.jpg",
+      "description": "Ronde claire du quai.",
+      "hp": 60,
+      "attack": {
+        "name": "Tempo tenu",
+        "power": 40
+      }
+    },
+    {
+      "id": "062",
+      "name": "Grand baton de l'espoir",
+      "rarity": "rare",
+      "emoji": "🎺",
+      "image": "images/Grand baton de l'espoir_Rare.jpg",
+      "source": "IMG-20251004-WA0000.jpg",
+      "description": "Ronde immobile du escalier.",
+      "hp": 80,
+      "attack": {
+        "name": "Tempo de bâton",
+        "power": 40
+      }
+    },
+    {
+      "id": "063",
+      "name": "Grand baton menaçant",
+      "rarity": "rare",
+      "emoji": "🎺",
+      "image": "images/Grand baton menaçant_rare.jpg",
+      "source": "IMG-20251004-WA0001.jpg",
+      "description": "Passe claire du quai.",
+      "hp": 60,
+      "attack": {
+        "name": "Passage des mains",
+        "power": 20
+      }
+    },
+    {
+      "id": "064",
+      "name": "Grand Singe",
+      "rarity": "rare",
+      "emoji": "🎺",
+      "image": "images/Grand Singe_Rare.jpg",
+      "source": "IMG-20251004-WA0002.jpg",
+      "description": "Silence léger sur la dernière marche.",
+      "hp": 80,
+      "attack": {
+        "name": "Huit battements",
+        "power": 40
+      }
+    },
+    {
+      "id": "065",
+      "name": "Homme armé",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/Homme armé_Peu commun.jpg",
+      "source": "IMG-20251004-WA0003.jpg",
+      "description": "Montée claire du quai.",
+      "hp": 110,
+      "attack": {
+        "name": "Frappe de dos",
+        "power": 50
+      }
+    },
+    {
+      "id": "066",
+      "name": "Jean Baton",
+      "rarity": "epic",
+      "emoji": "🎺",
+      "image": "images/Jean Baton_Epique.jpg",
+      "source": "IMG-20251004-WA0008.jpg",
+      "description": "Montée du square, patiente depuis toujours.",
+      "hp": 70,
+      "attack": {
+        "name": "Roulade de poignet",
+        "power": 20
+      }
+    },
+    {
+      "id": "067",
+      "name": "La triplette",
+      "rarity": "rare",
+      "emoji": "🎺",
+      "image": "images/La triplette_Rare.jpg",
+      "source": "IMG-20251004-WA0009.jpg",
+      "description": "Fouet fêlé, Bravoure nocturne et Fouet lourd.",
+      "hp": 150,
+      "attack": {
+        "name": "Cascade de coups",
+        "power": 60
+      }
+    },
+    {
+      "id": "068",
+      "name": "Le bout du bout",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/Le bout du bout_Commun.jpg",
+      "source": "IMG-20251004-WA0010.jpg",
+      "description": "Rebond léger sur les bateaus.",
+      "hp": 90,
+      "attack": {
+        "name": "Rebond sec",
+        "power": 20
+      }
+    },
+    {
+      "id": "069",
+      "name": "Le bucheron est passé",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/Le bucheron est passé_Commun.jpg",
+      "source": "IMG-20251005-WA0007.jpg",
+      "description": "Ronde du toit, sèche depuis toujours.",
+      "hp": 100,
+      "attack": {
+        "name": "Coup de manche",
+        "power": 50
+      }
+    },
+    {
+      "id": "070",
+      "name": "Le chiffre 4",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/082 Le chiffre 4_Commun.jpg",
+      "source": "IMG-20251008-WA0021.jpg",
+      "description": "Fouet têtu du trottoir.",
+      "hp": 100,
+      "attack": {
+        "name": "Frappe sèche",
+        "power": 40
+      }
+    },
+    {
+      "id": "071",
+      "name": "Le Daron de Seb",
+      "rarity": "legendary",
+      "emoji": "🎺",
+      "image": "images/016Le Daron de Seb_Légendaire.jpg",
+      "source": "IMG-20251012-WA0005.jpg",
+      "description": "Coup verni à la nuit tombée.",
+      "hp": 120,
+      "attack": {
+        "name": "Passage des mains",
+        "power": 90
+      }
+    },
+    {
+      "id": "072",
+      "name": "Le penseur",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/Le penseur_Peu Commun.jpg",
+      "source": "IMG-20251024-WA0001.jpg",
+      "description": "Passe rêveuse à la nuit tombée.",
+      "hp": 80,
+      "attack": {
+        "name": "Final au poignet",
+        "power": 30
+      }
+    },
+    {
+      "id": "073",
+      "name": "Les habitants du Larzac",
+      "rarity": "rare",
+      "emoji": "🎺",
+      "image": "images/Les habitants du Larzac_Rare.jpg",
+      "source": "IMG-20251024-WA0014.jpg",
+      "description": "Bord léger du parvis.",
+      "hp": 60,
+      "attack": {
+        "name": "Bâton en avant",
+        "power": 30
+      }
+    },
+    {
+      "id": "074",
+      "name": "Long baton",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/Long baton_Peu commun.jpg",
+      "source": "IMG-20251025-WA0000.jpg",
+      "description": "Bâton têtu sur les trottoirs.",
+      "hp": 60,
+      "attack": {
+        "name": "Bâton en avant",
+        "power": 40
+      }
+    },
+    {
+      "id": "075",
+      "name": "Magie sur Yvette",
+      "rarity": "rare",
+      "emoji": "🎺",
+      "image": "images/Magie sur Yvette_Rare.jpg",
+      "source": "IMG-20251025-WA0001.jpg",
+      "description": "Frappe trempée du faubourg.",
+      "hp": 90,
+      "attack": {
+        "name": "Huit battements",
+        "power": 20
+      }
+    },
+    {
+      "id": "076",
+      "name": "Mais dis donc bo baton",
+      "rarity": "rare",
+      "emoji": "🎺",
+      "image": "images/Mais dis donc bo baton_Rare.jpg",
+      "source": "IMG-20251026-WA0001.jpg",
+      "description": "Contretemps qui ouvre le trottoir après le dernier coup.",
+      "hp": 120,
+      "attack": {
+        "name": "Reprise de tempo",
+        "power": 60
+      }
+    },
+    {
+      "id": "077",
+      "name": "MiniGun",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/MiniGun_Peu commun.jpg",
+      "source": "IMG-20251029-WA0000.jpg",
+      "description": "Silence immobile au milieu du silence.",
+      "hp": 120,
+      "attack": {
+        "name": "Tempo tenu",
+        "power": 80
+      }
+    },
+    {
+      "id": "078",
+      "name": "Monsieur Crabe",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/Monsieur Crabe_Peu commun.jpg",
+      "source": "IMG-20251029-WA0003.jpg",
+      "description": "Balancement endormi, Manche doré et Ronde immobile.",
+      "hp": 110,
+      "attack": {
+        "name": "Cascade de coups",
+        "power": 60
+      }
+    },
+    {
+      "id": "079",
+      "name": "Mouais...",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/Mouais..._Commun.jpg",
+      "source": "IMG-20251030-WA0003.jpg",
+      "description": "Silence qui frappe le bateau quand la pluie tombe.",
+      "hp": 120,
+      "attack": {
+        "name": "Huit battements",
+        "power": 60
+      }
+    },
+    {
+      "id": "080",
+      "name": "Muni d'une grande arme",
+      "rarity": "rare",
+      "emoji": "🎺",
+      "image": "images/Muni d'une grande arme_Rare.jpg",
+      "source": "IMG-20251031-WA0000.jpg",
+      "description": "Bord nocturne, Passe fêlée et Montée sèche.",
+      "hp": 70,
+      "attack": {
+        "name": "Coup de manche",
+        "power": 40
+      }
+    },
+    {
+      "id": "081",
+      "name": "Museum",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/Museum_Commun.jpg",
+      "source": "IMG-20251104-WA0002.jpg",
+      "description": "Coup du faubourg, fêlé depuis toujours.",
+      "hp": 70,
+      "attack": {
+        "name": "Huit battements",
+        "power": 30
+      }
+    },
+    {
+      "id": "082",
+      "name": "Nyoï Bo (dragon ball)",
+      "rarity": "epic",
+      "emoji": "🎺",
+      "image": "images/111Nyoï Bo (dragon ball)_Epique.jpg",
+      "source": "IMG-20251107-WA0011.jpg",
+      "description": "Contretemps endormi sur les canals.",
+      "hp": 70,
+      "attack": {
+        "name": "Descente d'aile",
+        "power": 30
+      }
+    },
+    {
+      "id": "083",
+      "name": "Perche",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/Perche_Commun.jpg",
+      "source": "IMG-20251115-WA0000.jpg",
+      "description": "Répétition dorée sur les trottoirs.",
+      "hp": 100,
+      "attack": {
+        "name": "Descente d'aile",
+        "power": 40
+      }
+    },
+    {
+      "id": "084",
+      "name": "Petit baton joyeux",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/Petit baton joyeux_Commun.jpg",
+      "source": "IMG-20251115-WA0001.jpg",
+      "description": "Montée du canal, sèche depuis toujours.",
+      "hp": 60,
+      "attack": {
+        "name": "Frappe sèche",
+        "power": 20
+      }
+    },
+    {
+      "id": "085",
+      "name": "Petit troncs gros troncs",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/Petit troncs gros troncs_Commun.jpg",
+      "source": "IMG-20251115-WA0004.jpg",
+      "description": "Reprise fière, Cadence rêveuse et Bâton doré.",
+      "hp": 70,
+      "attack": {
+        "name": "Tempo tenu",
+        "power": 40
+      }
+    },
+    {
+      "id": "086",
+      "name": "Phasme",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/Phasme_peu commun.jpg",
+      "source": "IMG-20251206-WA0004.jpg",
+      "description": "Balancement doré, Bravoure lourde et Bord lourd.",
+      "hp": 90,
+      "attack": {
+        "name": "Sortie de manche",
+        "power": 30
+      }
+    },
+    {
+      "id": "087",
+      "name": "Pistolet",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/Pistolet_Commun.jpg",
+      "source": "IMG-20251213-WA0000.jpg",
+      "description": "Répétition du trottoir, claire depuis toujours.",
+      "hp": 60,
+      "attack": {
+        "name": "Relance",
+        "power": 40
+      }
+    },
+    {
+      "id": "088",
+      "name": "Pistolet de poche",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/Pistolet de poche_Commun.jpg",
+      "source": "IMG-20251216-WA0012.jpg",
+      "description": "Silence immobile du parvis.",
+      "hp": 60,
+      "attack": {
+        "name": "Balancement lent",
+        "power": 40
+      }
+    },
+    {
+      "id": "089",
+      "name": "Pistolet enneigé",
+      "rarity": "rare",
+      "emoji": "🎺",
+      "image": "images/Pistolet enneigé_Rare.jpg",
+      "source": "IMG-20251223-WA0000.jpg",
+      "description": "Répétition nocturne, Répétition lourde et Montée solennelle.",
+      "hp": 90,
+      "attack": {
+        "name": "Balancement lent",
+        "power": 40
+      }
+    },
+    {
+      "id": "090",
+      "name": "Ptit bout d'bois",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/Ptit bout d'bois_Commun.jpg",
+      "source": "IMG-20251229-WA0001.jpg",
+      "description": "Bravoure claire, Répétition patiente et Rebond clair.",
+      "hp": 60,
+      "attack": {
+        "name": "Double frappe",
+        "power": 40
+      }
+    },
+    {
+      "id": "091",
+      "name": "Ptite branche",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/Ptite branche_Commun.jpg",
+      "source": "IMG-20251229-WA0002.jpg",
+      "description": "Reprise qui danse le faubourg à la nuit tombée.",
+      "hp": 80,
+      "attack": {
+        "name": "Rebond sec",
+        "power": 20
+      }
+    },
+    {
+      "id": "092",
+      "name": "Sceptre Doré",
+      "rarity": "rare",
+      "emoji": "🎺",
+      "image": "images/Sceptre Doré_Rare.jpg",
+      "source": "IMG-20251230-WA0000.jpg",
+      "description": "Balade vernie sur les canals.",
+      "hp": 120,
+      "attack": {
+        "name": "Passage des mains",
+        "power": 60
+      }
+    },
+    {
+      "id": "093",
+      "name": "Seb Marathonien",
+      "rarity": "rare",
+      "emoji": "🎺",
+      "image": "images/Seb Marathonien_Rare.jpg",
+      "source": "IMG-20251230-WA0001.jpg",
+      "description": "Cadence dorée du canal.",
+      "hp": 110,
+      "attack": {
+        "name": "Bâton levé",
+        "power": 60
+      }
+    },
+    {
+      "id": "094",
+      "name": "Smiley",
+      "rarity": "rare",
+      "emoji": "🎺",
+      "image": "images/Smiley_Rare.jpg",
+      "source": "IMG-20260102-WA0002.jpg",
+      "description": "Marche trempée sur les squares.",
+      "hp": 60,
+      "attack": {
+        "name": "Coup de manche",
+        "power": 40
+      }
+    },
+    {
+      "id": "095",
+      "name": "Stick Minecraft",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/012Stick Minecraft_Commun.png",
+      "source": "IMG-20260215-WA0003.jpg",
+      "description": "Bord patient sur les quais.",
+      "hp": 100,
+      "attack": {
+        "name": "Double frappe",
+        "power": 60
+      }
+    },
+    {
+      "id": "096",
+      "name": "Stick Minecraft 2",
+      "rarity": "rare",
+      "emoji": "🎺",
+      "image": "images/013 Stick Minecraft_Rare.png",
+      "source": "IMG-20260408-WA0003.jpg",
+      "description": "Reprise endormie, Poignée fêlé et Poignée nocturne.",
+      "hp": 140,
+      "attack": {
+        "name": "Croisière des mains",
+        "power": 60
+      }
+    },
+    {
+      "id": "097",
+      "name": "Stock (Munich)",
+      "rarity": "rare",
+      "emoji": "🎺",
+      "image": "images/Stock (Munich)_Rare.jpg",
+      "source": "IMG-20260408-WA0004.jpg",
+      "description": "Bâton de chef solennel sur les trottoirs.",
+      "hp": 60,
+      "attack": {
+        "name": "Passage des mains",
+        "power": 30
+      }
+    },
+    {
+      "id": "098",
+      "name": "Sun Wukong et son baton",
+      "rarity": "rare",
+      "emoji": "🎺",
+      "image": "images/Sun Wukong et son baton_Rare.jpg",
+      "source": "IMG-20260409-WA0001.jpg",
+      "description": "Bâton endormi, Marche rêveuse et Bâton de chef nocturne.",
+      "hp": 90,
+      "attack": {
+        "name": "Passage des mains",
+        "power": 40
+      }
+    },
+    {
+      "id": "099",
+      "name": "T ancestral",
+      "rarity": "rare",
+      "emoji": "🎺",
+      "image": "images/T ancestral_Rare.jpg",
+      "source": "IMG-20260414-WA0025.jpg",
+      "description": "Répétition immobile, Coup nocturne et Cadence sèche.",
+      "hp": 120,
+      "attack": {
+        "name": "Rebond sec",
+        "power": 70
+      }
+    },
+    {
+      "id": "100",
+      "name": "Tas de buches",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/Tas de buches_Commun.jpg",
+      "source": "IMG-20260606-WA0005.jpg",
+      "description": "Contretemps du kiosque, endormi depuis toujours.",
+      "hp": 100,
+      "attack": {
+        "name": "Passage des mains",
+        "power": 60
+      }
+    },
+    {
+      "id": "101",
+      "name": "Tout petit baton",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/005Tout petit baton_Commun.jpg",
+      "source": "IMG-20260606-WA0010.jpg",
+      "description": "Montée du escalier, têtue depuis toujours.",
+      "hp": 80,
+      "attack": {
+        "name": "Relance",
+        "power": 40
+      }
+    },
+    {
+      "id": "102",
+      "name": "Tres grand baton (974)",
+      "rarity": "epic",
+      "emoji": "🎺",
+      "image": "images/Tres grand baton (974)_Epique.jpg",
+      "source": "IMG-20260720-WA0002.jpg",
+      "description": "Tempo têtu quand la pluie tombe.",
+      "hp": 120,
+      "attack": {
+        "name": "Montée de poignet",
+        "power": 40
+      }
+    },
+    {
+      "id": "103",
+      "name": "Tres Tres Grand",
+      "rarity": "epic",
+      "emoji": "🎺",
+      "image": "images/Tres Tres Grand_Epique.jpg",
+      "source": "IMG-20260829-WA0009.jpg",
+      "description": "Reprise du parvis, trempée depuis toujours.",
+      "hp": 90,
+      "attack": {
+        "name": "Croisière des mains",
+        "power": 30
+      }
+    },
+    {
+      "id": "104",
+      "name": "Tronc farfelue sur caillou",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/Tronc farfelue sur caillou_Commun.jpg",
+      "source": "IMG-20260904-WA0001.jpg",
+      "description": "Bâton de chef du portail, têtu depuis toujours.",
+      "hp": 100,
+      "attack": {
+        "name": "Coup de manche",
+        "power": 60
+      }
+    },
+    {
+      "id": "105",
+      "name": "Tronc mort supplément feuille",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/Tronc mort supplément feuille_Commun.jpg",
+      "source": "IMG-20260911-WA0020.jpg",
+      "description": "Ronde qui ouvre le trottoir les jours de fête.",
+      "hp": 60,
+      "attack": {
+        "name": "Reprise de tempo",
+        "power": 30
+      }
+    },
+    {
+      "id": "106",
+      "name": "Troncs",
+      "rarity": "rare",
+      "emoji": "🎺",
+      "image": "images/Troncs_Rare.jpg",
+      "source": "IMG-20260923-WA0000.jpg",
+      "description": "Bord doré sur les trottoirs.",
+      "hp": 100,
+      "attack": {
+        "name": "Montée de poignet",
+        "power": 60
+      }
+    },
+    {
+      "id": "107",
+      "name": "Troncs 2BD0D",
+      "rarity": "rare",
+      "emoji": "🎺",
+      "image": "images/Troncs 2BD0D_Rare.jpg",
+      "source": "IMG-20260926-WA0000.jpg",
+      "description": "Marche nocturne, Répétition têtue et Bravoure claire.",
+      "hp": 110,
+      "attack": {
+        "name": "Redoublement",
+        "power": 60
+      }
+    },
+    {
+      "id": "108",
+      "name": "Troncs escalier bloqué",
+      "rarity": "rare",
+      "emoji": "🎺",
+      "image": "images/Troncs escalier bloqué_Rare.jpg",
+      "source": "IMG-20260926-WA0001.jpg",
+      "description": "Bravoure fière du kiosque.",
+      "hp": 90,
+      "attack": {
+        "name": "Roulade d'épaule",
+        "power": 40
+      }
+    },
+    {
+      "id": "109",
+      "name": "Virgule",
+      "rarity": "common",
+      "emoji": "🎺",
+      "image": "images/Virgule_Peu commun.jpg",
+      "source": "IMG-20260927-WA0005.jpg",
+      "description": "Reprise sèche du trottoir.",
+      "hp": 90,
+      "attack": {
+        "name": "Cascade de coups",
+        "power": 60
+      }
     }
   ],
-  "note": "Migration STICS depuis image-stics/ (noms et raretes generes, seed=1337)."
+  "note": "Collection relue depuis les noms de fichiers images/<Nom>_<Rarete>.ext (109 cartes, identifiants alpha, common=64, rare=29, epic=12, legendary=4). Script sync_cards_from_images.py."
 }
